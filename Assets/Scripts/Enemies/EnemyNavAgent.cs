@@ -3,32 +3,47 @@ using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(Health))]
 public class EnemyNavAgent : MonoBehaviour
 {
-    [SerializeField] private EnemyData data;
-    [SerializeField] private Transform target;
-
+    private EnemyData _data;
+    private Transform _target;
     private NavMeshAgent _agent;
-    [SerializeField] private float _health;
+    private Health _health;
+
+    public void Setup(EnemyData data, Transform target)
+    {
+        _data = data;
+        _target = target;
+    }
 
     private void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
+        _health = GetComponent<Health>();
+
+        _health.OnDied += OnDeath;
     }
 
     private void Start()
     {
-        _health = data.health;
-        _agent.speed = data.speed;
-        _agent.SetDestination(target.position);
+        _agent.speed = _data.speed;
+        _agent.SetDestination(_target.position);
+        _health.SetMaxHealth(_data.health);
+    }
+
+    private void Update()
+    {
+        // ..AI
     }
 
     public void TakeDamage(int dmg)
     {
-        _health -= dmg;
-        if (_health <= 0f)
-        {
-            Destroy(gameObject);
-        }
+        _health.TakeDamage(dmg);
+    }
+
+    private void OnDeath()
+    {
+        Destroy(gameObject);
     }
 }

@@ -23,16 +23,14 @@ public class Projectile : MonoBehaviour
         Vector3 dir = (target.position - transform.position).normalized;
         transform.position += dir * speed * Time.deltaTime;
 
-        if (Vector3.Distance(transform.position, target.position) < 0.2f)
+        if (!(Vector3.Distance(transform.position, target.position) < 0.2f)) return;
+        
+        var enemy = target.GetComponent<EnemyNavAgent>();
+        if (enemy != null)
         {
-            // Düşmanın health'ini burada azaltabilirsin
-            var enemy = target.GetComponent<EnemyNavAgent>();
-            if (enemy != null)
-            {
-                enemy.TakeDamage(damage);
-            }
-
-            Destroy(gameObject);
+            enemy.TakeDamage(damage);
         }
+
+        Destroy(gameObject);
     }
 }

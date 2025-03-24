@@ -1,21 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
-using ScriptableObjects;
 using UnityEngine;
+using Zenject;
+using ScriptableObjects;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private EnemyData runnerData;
     [SerializeField] private EnemyData attackerData;
-    [SerializeField] private Transform target;
+    [SerializeField] private Transform baseTarget;
+    
+    [Inject]
+    private IFactory<EnemyData, Transform, Vector3, EnemyNavAgent> _factory;
 
     private void Start()
     {
-        var e1 = Instantiate(enemyPrefab, new Vector3(0, 0, -5), Quaternion.identity);
-        e1.GetComponent<Enemy>().Initialize(runnerData, target);
-
-        var e2 = Instantiate(enemyPrefab, new Vector3(2, 0, -5), Quaternion.identity);
-        e2.GetComponent<Enemy>().Initialize(attackerData, target);
+        _factory.Create(runnerData, baseTarget, new Vector3(0,1,15 + Random.Range(-5f,5f)));
+        _factory.Create(attackerData, baseTarget, new Vector3(0,1,15 + Random.Range(-5f,5f)));
     }
 }

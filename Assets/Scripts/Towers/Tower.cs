@@ -5,6 +5,7 @@ using DG.Tweening;
 public class Tower : MonoBehaviour
 {
     private TowerData _data;
+    private Health _health;
 
     private float _attackTimer;
     [SerializeField] private Transform _currentTarget;
@@ -20,6 +21,12 @@ public class Tower : MonoBehaviour
     {
         _data = data;
         _attackTimer = 0f;
+    }
+    
+    private void Awake()
+    {
+        _health = GetComponent<Health>();
+        _health.OnDied += OnDestroyed;
     }
 
     private void Update()
@@ -99,5 +106,15 @@ public class Tower : MonoBehaviour
                     .SetEase(Ease.InQuad)
                     .SetId(this);
             });
+    }
+    
+    public void TakeDamage(int dmg)
+    {
+        _health.TakeDamage(dmg);
+    }
+    
+    private void OnDestroyed()
+    { 
+        Destroy(gameObject);
     }
 }

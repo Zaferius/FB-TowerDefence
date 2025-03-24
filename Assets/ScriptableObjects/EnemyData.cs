@@ -12,7 +12,8 @@ namespace ScriptableObjects
         public enum EnemyType
         {
             Runner,
-            Attacker
+            Attacker,
+            Test
         }
     }
 }

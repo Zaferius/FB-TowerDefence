@@ -10,7 +10,7 @@ public class TowerPlacementManager : MonoBehaviour
     [SerializeField] private float placementDuration = 5f;
     [SerializeField] private TowerData towerData;
 
-    private bool canPlace = false;
+    [SerializeField] private bool canPlace = false;
 
     private void Start()
     {

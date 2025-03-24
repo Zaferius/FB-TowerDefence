@@ -1,16 +1,21 @@
 using UnityEngine;
 using System.Collections.Generic;
+using DG.Tweening;
 
 public class Tower : MonoBehaviour
 {
     private TowerData _data;
 
     private float _attackTimer;
-    private Transform _currentTarget;
+    [SerializeField] private Transform _currentTarget;
 
-    [SerializeField] private Transform turretHead; // Opsiyonel: Dönecek parça
-    [SerializeField] private GameObject projectilePrefab; // İleride tanımlayacağız
+    [SerializeField] private Transform turretHead;
+    [SerializeField] private Transform turretBarrel;
+    [SerializeField] private Transform firePoint;
+    [SerializeField] private GameObject projectilePrefab;
 
+
+    [Header("Anims")] private DOTween[] barrelTweens;
     public void Initialize(TowerData data)
     {
         _data = data;
@@ -30,7 +35,7 @@ public class Tower : MonoBehaviour
         
         if (_currentTarget != null && _attackTimer <= 0f)
         {
-            /*Shoot();*/
+            Shoot();
             _attackTimer = 1f / _data.fireRate;
         }
     }
@@ -53,22 +58,46 @@ public class Tower : MonoBehaviour
         return nearest;
     }
 
-    /*private void Shoot()
+    private void Shoot()
     {
         if (projectilePrefab == null) return;
 
-        var projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+        var projectile = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
         var projScript = projectile.GetComponent<Projectile>();
+        
         if (projScript != null)
         {
             projScript.SetTarget(_currentTarget, _data.damage);
         }
 
-        // Opsiyonel: turretHead varsa hedefe döndür
-        if (turretHead != null)
-        {
-            Vector3 dir = (_currentTarget.position - turretHead.position).normalized;
-            turretHead.forward = dir;
-        }
-    }*/
+        if (turretHead == null) return;
+
+        PlayTurretRecoil();
+        
+        Vector3 dir = (_currentTarget.position - turretHead.position).normalized;
+        turretHead.forward = dir;
+    }
+    
+    private void PlayTurretRecoil()
+    {
+        var punchFactor = new Vector3(.25f, .25f, .25f);
+        turretHead.DOPunchScale(punchFactor, 0.2f);
+        
+        float recoilDistance = 0.3f;
+        float recoilDuration = 0.035f;
+        float returnDistance = 0.75f;
+        float returnDuration = 0.65f;
+
+        DOTween.Kill(this);
+
+        turretBarrel.DOLocalMoveZ(recoilDistance, recoilDuration)
+            .SetEase(Ease.OutQuad)
+            .SetId(this)
+            .OnComplete(() =>
+            {
+                turretBarrel.DOLocalMoveZ(returnDistance, returnDuration)
+                    .SetEase(Ease.InQuad)
+                    .SetId(this);
+            });
+    }
 }

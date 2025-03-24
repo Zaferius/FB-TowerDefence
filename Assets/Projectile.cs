@@ -26,7 +26,7 @@ public class Projectile : MonoBehaviour
         if (Vector3.Distance(transform.position, target.position) < 0.2f)
         {
             // Düşmanın health'ini burada azaltabilirsin
-            var enemy = target.GetComponent<Enemy>();
+            var enemy = target.GetComponent<EnemyNavAgent>();
             if (enemy != null)
             {
                 enemy.TakeDamage(damage);

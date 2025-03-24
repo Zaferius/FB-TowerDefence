@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: EnemyTypeConfig_Attacker
   m_EditorClassIdentifier: 
   type: 1
-  health: 60
+  health: 200
   speed: 3
-  attackCooldown: 3
-  attackRange: 5
+  attackPower: 5
+  attackCooldown: 0.5
+  attackRange: 25
   prefab: {fileID: 7411337395877470646, guid: d0e2c501de4d2184fb91ca6466ddfe04, type: 3}

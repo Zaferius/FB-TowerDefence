@@ -1,6 +1,8 @@
+using System;
 using UnityEngine;
 using System.Collections.Generic;
 using DG.Tweening;
+using Zenject;
 
 public class Tower : MonoBehaviour
 {
@@ -17,6 +19,9 @@ public class Tower : MonoBehaviour
 
 
     [Header("Anims")] private DOTween[] barrelTweens;
+    
+    
+    [Inject] private TowerManager _towerManager;
     public void Initialize(TowerData data)
     {
         _data = data;
@@ -27,6 +32,11 @@ public class Tower : MonoBehaviour
     {
         _health = GetComponent<Health>();
         _health.OnDied += OnDestroyed;
+    }
+
+    private void Start()
+    {
+        _towerManager.RegisterTower(this);
     }
 
     private void Update()
@@ -116,5 +126,11 @@ public class Tower : MonoBehaviour
     private void OnDestroyed()
     { 
         Destroy(gameObject);
+    }
+    
+    private void OnDestroy()
+    {
+        if (_towerManager != null)
+            _towerManager.UnregisterTower(this);
     }
 }

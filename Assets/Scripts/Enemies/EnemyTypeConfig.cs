@@ -9,6 +9,7 @@ public class EnemyDefinition : ScriptableObject
     [Header("Stats")]
     public float health;
     public float speed;
+    public int attackPower;
     public float attackCooldown;
     public float attackRange;
 

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1aaffcc97a2d6f84aaf74326b1e6f6b8, type: 3}
   m_Name: TowerData
   m_EditorClassIdentifier: 
-  range: 10
-  fireRate: 1
-  damage: 15
+  health: 153
+  range: 34
+  fireRate: 3
+  damage: 25

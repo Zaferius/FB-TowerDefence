@@ -6,30 +6,30 @@ using UnityEngine.AI;
 [RequireComponent(typeof(Health))]
 public class EnemyNavAgent : MonoBehaviour
 {
-    private EnemyData _data;
     private Transform _target;
     private NavMeshAgent _agent;
     private Health _health;
+    
+    private EnemyDefinition _definition;
 
-    public void Setup(EnemyData data, Transform target)
+    public void Setup(EnemyDefinition definition, Transform target)
     {
-        _data = data;
+        _definition = definition;
         _target = target;
     }
-
+    
     private void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
         _health = GetComponent<Health>();
-
         _health.OnDied += OnDeath;
     }
 
     private void Start()
     {
-        _agent.speed = _data.speed;
         _agent.SetDestination(_target.position);
-        _health.SetMaxHealth(_data.health);
+        _agent.speed = _definition.speed;
+        _health.SetMaxHealth(_definition.health);
     }
 
     private void Update()

@@ -1,19 +1,33 @@
 using UnityEngine;
 using Zenject;
-using ScriptableObjects;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] private EnemyData runnerData;
-    [SerializeField] private EnemyData attackerData;
     [SerializeField] private Transform baseTarget;
-    
+    [SerializeField] private Transform[] spawnPoints;
+    [SerializeField] private EnemyDefinition[] enemyDefinitions;
+
+    private IFactory<EnemyDefinition, Transform, Vector3, EnemyNavAgent> _enemyFactory;
+
     [Inject]
-    private IFactory<EnemyData, Transform, Vector3, EnemyNavAgent> _factory;
+    public void Construct(IFactory<EnemyDefinition, Transform, Vector3, EnemyNavAgent> factory)
+    {
+        _enemyFactory = factory;
+    }
 
     private void Start()
     {
-        _factory.Create(runnerData, baseTarget, new Vector3(0,1,15 + Random.Range(-5f,5f)));
-        _factory.Create(attackerData, baseTarget, new Vector3(0,1,15 + Random.Range(-5f,5f)));
+        SpawnAllEnemies();
+    }
+
+    private void SpawnAllEnemies()
+    {
+        for (int i = 0; i < enemyDefinitions.Length; i++)
+        {
+            var definition = enemyDefinitions[i];
+            var spawnPoint = spawnPoints[i % spawnPoints.Length]; // circular
+
+            _enemyFactory.Create(definition, baseTarget, spawnPoint.position);
+        }
     }
 }

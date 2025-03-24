@@ -1,12 +1,12 @@
-using Zenject;
 using UnityEngine;
+using Zenject;
 
 public class SceneInstaller : MonoInstaller
 {
-    [SerializeField] private GameSettings gameSettings;
+    [SerializeField] private GameObject towerPrefab;
 
     public override void InstallBindings()
     {
-        Container.BindInstance(gameSettings).AsSingle();
+        Container.Bind<TowerFactory>().AsSingle().WithArguments(towerPrefab);
     }
 }

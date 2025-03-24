@@ -3,32 +3,30 @@ using Zenject;
 
 public class TowerPlacementManager : MonoBehaviour
 {
+    [Inject] private TowerFactory _towerFactory;
+
     [SerializeField] private Camera mainCamera;
-    [SerializeField] private GameObject towerPrefab;
     [SerializeField] private LayerMask placementMask;
     [SerializeField] private float placementDuration = 5f;
+    [SerializeField] private TowerData towerData;
 
     private bool canPlace = false;
-    private TowerData currentTowerData;
-    private DiContainer _container;
 
-    [Inject]
-    public void Construct(DiContainer container)
+    private void Start()
     {
-        _container = container;
+        EnablePlacement(towerData); // for testt
     }
 
-    public void EnablePlacement(TowerData towerData)
+    public void EnablePlacement(TowerData data)
     {
+        towerData = data;
         canPlace = true;
-        currentTowerData = towerData;
         Invoke(nameof(DisablePlacement), placementDuration);
     }
 
     private void DisablePlacement()
     {
         canPlace = false;
-        currentTowerData = null;
     }
 
     private void Update()
@@ -40,13 +38,12 @@ public class TowerPlacementManager : MonoBehaviour
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit, 100f, placementMask))
             {
-                var slot = hit.transform;
+                Transform slot = hit.transform;
 
                 if (slot.childCount == 0)
                 {
-                    var tower = _container.InstantiatePrefab(towerPrefab, slot.position, Quaternion.identity, slot);
-                    var towerComp = tower.GetComponent<Tower>();
-                    towerComp.Initialize(currentTowerData);
+                    var tower = _towerFactory.Create(slot.position, slot);
+                    tower.Initialize(towerData);
                 }
             }
         }

@@ -21,4 +21,22 @@ public class TowerManager : MonoBehaviour
     {
         return _towers;
     }
+    
+    public Tower GetClosestTower(Vector3 position, float maxDistance = Mathf.Infinity)
+    {
+        Tower closest = null;
+        float closestDist = maxDistance;
+
+        foreach (var tower in _towers)
+        {
+            float dist = Vector3.Distance(position, tower.transform.position);
+            if (dist < closestDist)
+            {
+                closest = tower;
+                closestDist = dist;
+            }
+        }
+
+        return closest;
+    }
 }

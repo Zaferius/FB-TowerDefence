@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   prefab: {fileID: 1293479120018931074, guid: cd01d2f4623a07147be685ca79a02071, type: 3}
-  health: 5
-  range: 15
+  health: 8888
+  range: 8
   fireRate: 1
-  damage: 15
+  damage: 1

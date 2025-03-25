@@ -4,23 +4,24 @@ using System;
 public class Health: MonoBehaviour, IHealth
 {
     [SerializeField] private float maxHealth = 10f;
-    public float Current { get; private set; }
+    [SerializeField] private float curHealth = 10f;
     public float Max => maxHealth;
-
+    public float Current => curHealth;
+    
     public event Action OnDeath;
     public event Action<float, float> OnHealthChanged;
 
     private void Awake()
     {
-        Current = maxHealth;
+        curHealth = maxHealth;
     }
 
     public void TakeDamage(int amount)
     {
-        Current -= amount;
-        OnHealthChanged?.Invoke(Current, maxHealth);
+        curHealth -= amount;
+        OnHealthChanged?.Invoke(curHealth, maxHealth);
 
-        if (Current <= 0)
+        if (curHealth <= 0)
         {
             Die();
         }
@@ -35,6 +36,6 @@ public class Health: MonoBehaviour, IHealth
     public void SetMaxHealth(float value)
     {
         maxHealth = value;
-        Current = value;
+        curHealth = value;
     }
 }

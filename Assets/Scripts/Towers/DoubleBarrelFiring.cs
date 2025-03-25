@@ -18,7 +18,7 @@ public class DoubleBarrelFiring : MonoBehaviour, ITowerFiringStrategy
         _timer = 0f;
     }
 
-    public void Tick()
+    /*public void Tick()
     {
         _timer -= Time.deltaTime;
 
@@ -28,9 +28,9 @@ public class DoubleBarrelFiring : MonoBehaviour, ITowerFiringStrategy
             Fire(target);
             _timer = 1f / _data.fireRate;
         }
-    }
+    }*/
 
-    private void Fire(EnemyNavAgent target)
+    public void Fire(EnemyNavAgent target)
     {
         weaponHolder.transform.DOLookAt(target.transform.position, 0.2f).SetEase(Ease.OutBack).OnComplete(() =>
         {

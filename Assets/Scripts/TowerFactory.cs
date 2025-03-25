@@ -21,7 +21,6 @@ public class TowerFactory : IFactory<TowerData, Vector3, Tower>
 
         var strategy = obj.GetComponent<ITowerFiringStrategy>();
         tower.Initialize(data, strategy, _towerManager);
-        _towerManager.RegisterTower(tower);
 
         return tower;
     }

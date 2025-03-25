@@ -37,5 +37,8 @@ public class SceneInstaller : MonoInstaller
         Container.Bind<TowerManager>()
             .FromInstance(towerManager)
             .AsSingle();
+        
+        Container.Bind<EnemyManager>().FromComponentInHierarchy().AsSingle();
+
     }
 }

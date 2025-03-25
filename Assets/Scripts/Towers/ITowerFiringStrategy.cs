@@ -1,5 +1,5 @@
 public interface ITowerFiringStrategy
 {
     void Initialize(TowerData data);
-    void Tick();
+    void Fire(EnemyNavAgent agent);
 }

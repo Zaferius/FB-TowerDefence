@@ -1,3 +1,4 @@
+using System;
 using ScriptableObjects;
 using UnityEngine;
 using UnityEngine.AI;
@@ -10,11 +11,13 @@ public class EnemyNavAgent : MonoBehaviour
     private EnemyDefinition _definition;
     private Transform _target;
     private NavMeshAgent _agent;
+    public IHealth Health { get; private set; }
     private Health _health;
     private IEnemyBehavior _behavior;
 
     [Inject] private TowerManager _towerManager;
     
+    [Inject] [SerializeField] private EnemyManager _enemyManager;
     
 
     public void Setup(EnemyDefinition definition, Transform target)
@@ -27,7 +30,8 @@ public class EnemyNavAgent : MonoBehaviour
     {
         _agent = GetComponent<NavMeshAgent>();
         _health = GetComponent<Health>();
-
+        Health = GetComponent<IHealth>();
+        
         _health.OnDeath += OnDied;
     }
 
@@ -80,5 +84,15 @@ public class EnemyNavAgent : MonoBehaviour
     private void OnDied()
     {
         Destroy(gameObject);
+    }
+
+    private void OnEnable()
+    {
+        _enemyManager?.RegisterEnemy(this);
+    }
+
+    private void OnDisable()
+    {
+        _enemyManager?.UnregisterEnemy(this);
     }
 }

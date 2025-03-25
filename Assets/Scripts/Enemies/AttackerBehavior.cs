@@ -1,42 +1,39 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using System.Collections.Generic;
 
 public class AttackerBehavior : IEnemyBehavior
 {
     private readonly NavMeshAgent _agent;
     private readonly TowerManager _towerManager;
-    private readonly Transform _self;
-    private readonly Transform _baseTarget;
-
-    private readonly int _attackPower;
+    private readonly Transform _selfTransform;
     private readonly float _attackRange;
     private readonly float _attackCooldown;
-
-    private Tower _targetTower;
-    private float _attackTimer;
-    
+    private readonly int _attackPower;
+    private readonly Transform _baseTarget;
     private readonly IAttackHandler _attackHandler;
+
+    private Tower _currentTargetTower;
+    private float _attackTimer;
 
     public AttackerBehavior(
         NavMeshAgent agent,
         TowerManager towerManager,
-        
         Transform self,
         int attackPower,
         float attackRange,
         float attackCooldown,
         Transform baseTarget,
-        IAttackHandler attackHandler)
+        IAttackHandler attackHandler
+    )
     {
         _agent = agent;
         _towerManager = towerManager;
-        _self = self;
-        _baseTarget = baseTarget;
-
+        _selfTransform = self;
         _attackPower = attackPower;
         _attackRange = attackRange;
         _attackCooldown = attackCooldown;
+        _baseTarget = baseTarget;
         _attackHandler = attackHandler;
     }
 
@@ -44,41 +41,52 @@ public class AttackerBehavior : IEnemyBehavior
     {
         _attackTimer -= Time.deltaTime;
 
-        if (_targetTower == null || _targetTower.gameObject == null)
+        // Eğer hedef kule null veya yok olmuşsa, en yakın kuleyi bul
+        if (_currentTargetTower == null)
         {
-            _targetTower = FindClosestTower();
-            _agent.SetDestination(_targetTower != null ? _targetTower.transform.position : _baseTarget.position);
+            _currentTargetTower = _towerManager.GetClosestTower(_selfTransform.position, _attackRange);
+
+            if (_currentTargetTower != null)
+            {
+                _agent.SetDestination(_currentTargetTower.transform.position);
+            }
+            else
+            {
+                // Etrafta kule yoksa base'e git
+                _agent.SetDestination(_baseTarget.position);
+                return;
+            }
         }
 
-        if (_targetTower != null)
+        // Hedef kule hâlâ menzilde mi?
+        float dist = Vector3.Distance(_selfTransform.position, _currentTargetTower.transform.position);
+
+        if (dist <= _attackRange)
         {
-            float dist = Vector3.Distance(_self.position, _targetTower.transform.position);
-            if (dist <= _attackRange && _attackTimer <= 0f)
+            _agent.isStopped = true;
+
+            // Kuleye saldıranlar listesine kendini ekle
+            _currentTargetTower.RegisterAttacker(GetAgent());
+
+            if (_attackTimer <= 0f)
             {
-                _attackHandler.DoAttack(_targetTower);
+                _attackHandler?.DoAttack(_currentTargetTower);
                 _attackTimer = _attackCooldown;
             }
         }
+        else
+        {
+            // Kuleye yaklaş
+            _agent.isStopped = false;
+            _agent.SetDestination(_currentTargetTower.transform.position);
+
+            // Eğer çok uzaksa, saldırmayı bırak
+            _currentTargetTower.UnregisterAttacker(GetAgent());
+        }
     }
 
-    private Tower FindClosestTower()
+    private EnemyNavAgent GetAgent()
     {
-        var towers = _towerManager.GetAllTowers();
-        Tower closest = null;
-        var minDist = Mathf.Infinity;
-
-        foreach (var tower in towers)
-        {
-            if (tower == null) continue;
-
-            float dist = Vector3.Distance(_self.position, tower.transform.position);
-            if (dist < _attackRange * 2f && dist < minDist)
-            {
-                closest = tower;
-                minDist = dist;
-            }
-        }
-
-        return closest;
+        return _selfTransform.GetComponent<EnemyNavAgent>();
     }
 }

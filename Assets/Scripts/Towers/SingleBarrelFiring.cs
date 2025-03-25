@@ -45,12 +45,17 @@ public class SingleBarrelFiring : MonoBehaviour, ITowerFiringStrategy
 
     private void Recoil()
     {
-        weaponHolder.transform.DOPunchScale(new Vector3(.125f, .125f, .125f), 0.35f).SetEase(Ease.OutQuad);
-        
-        DOTween.Kill(this);
-        weaponBarrel.DOLocalMoveZ(0.3f, 0.05f).SetEase(Ease.OutQuad).SetId(this).OnComplete(() =>
+        weaponHolder.transform.DOPunchScale(new Vector3(.125f, .125f, .125f), 0.35f).SetEase(Ease.OutQuad).OnComplete(() =>
         {
-            weaponBarrel.DOLocalMoveZ(0.75f, 0.6f).SetEase(Ease.InQuad).SetId(this).SetDelay(0.35f);
+            weaponHolder.DOScale(Vector3.one, 1f);
         });
+        
+        DOTween.Kill(weaponBarrel);
+        weaponBarrel.DOPunchPosition(
+            new Vector3(0, 0, -0.5f), 
+            0.4f,                     
+            1,                     
+            0.5f           
+        ).SetEase(Ease.OutQuad).SetId(weaponBarrel);
     }
 }

@@ -51,7 +51,10 @@ public class DoubleBarrelFiring : MonoBehaviour, ITowerFiringStrategy
     {
         if (index < 0 || index >= weaponBarrels.Length) return;
 
-        weaponHolder.transform.DOPunchScale(new Vector3(.125f, .125f, .125f), 0.35f).SetEase(Ease.OutQuad);
+        weaponHolder.transform.DOPunchScale(new Vector3(.125f, .125f, .125f), 0.35f).SetEase(Ease.OutQuad).OnComplete(() =>
+        {
+            weaponHolder.DOScale(Vector3.one, 1f);
+        });
 
         DOTween.Kill(weaponBarrels[index]);
 

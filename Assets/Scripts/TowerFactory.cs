@@ -22,6 +22,13 @@ public class TowerFactory : IFactory<TowerData, Vector3, Tower>
         var strategy = obj.GetComponent<ITowerFiringStrategy>();
         tower.Initialize(data, strategy, _towerManager);
 
+        tower.transform
+            .DOScale(Vector3.one, 0.2f)
+            .From(Vector3.zero)
+            .SetEase(Ease.OutBack);
+
+        tower.transform.localEulerAngles = new Vector3(0, Random.Range(0, 360), 0);
+        
         return tower;
     }
 }

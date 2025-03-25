@@ -9,7 +9,7 @@ public class Tower : MonoBehaviour
     private IHealth _health;
     private ITowerFiringStrategy _firingStrategy;
     private TowerManager _towerManager;
-    [Inject] private EnemyManager _enemyManager;
+   
     
     [SerializeField] private List<EnemyNavAgent> _enemiesInRange = new();
     [SerializeField] private  List<EnemyNavAgent> _currentlyInRange = new();
@@ -18,11 +18,15 @@ public class Tower : MonoBehaviour
     private EnemyNavAgent _currentTarget;
     
     private TowerData _towerData;
+    [Inject] private EnemyManager _enemyManager;
 
+    [Header("Attack")]
+    private float _timer;
     [SerializeField] private float attackCooldown = 1f;
-    private float _attackTimer;
     
-    [SerializeField] private float detectionCheckInterval = 0.2f; // kaç saniyede bir tarasın
+    
+    [Header("Detection System")]
+    [SerializeField] private float detectionCheckInterval = 0.2f;
     private float _detectionTimer;
     
     
@@ -34,12 +38,11 @@ public class Tower : MonoBehaviour
         _towerManager = towerManager;
         _towerManager.RegisterTower(this);
         _firingStrategy.Initialize(data);
-        
-        
+        _timer = 0;
 
         if (_health is Health hc)
         {
-            hc.SetMaxHealth(data.health); // TowerData'dan geliyorsa
+            hc.SetMaxHealth(data.health); 
         }
     }
     
@@ -113,15 +116,15 @@ public class Tower : MonoBehaviour
 
     private void UpdateAttack()
     {
-        _attackTimer -= Time.deltaTime;
+        _timer -= Time.deltaTime;
 
-        if (_attackTimer <= 0f)
+        if (_timer <= 0f)
         {
             var target = GetPriorityTarget();
             if (target != null)
             {
                 _firingStrategy.Fire(target);
-                _attackTimer = attackCooldown;
+                _timer = _towerData.attackTimer;
             }
         }
     }

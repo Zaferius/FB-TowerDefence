@@ -16,5 +16,5 @@ MonoBehaviour:
   prefab: {fileID: 1293479120018931074, guid: cd01d2f4623a07147be685ca79a02071, type: 3}
   health: 8888
   range: 8
-  fireRate: 1
-  damage: 1
+  attackTimer: 0.65
+  damage: 7

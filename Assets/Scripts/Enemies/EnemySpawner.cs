@@ -1,11 +1,14 @@
 using UnityEngine;
 using Zenject;
+using System.Collections.Generic;
 
 public class EnemySpawner : MonoBehaviour
 {
+    [Header("Spawner Settings")]
     [SerializeField] private Transform baseTarget;
     [SerializeField] private Transform[] spawnPoints;
-    [SerializeField] private EnemyDefinition[] enemyDefinitions;
+    [SerializeField] private List<EnemyDefinition> availableEnemyTypes;
+    [SerializeField] private int totalEnemyCount = 10;
 
     private IFactory<EnemyDefinition, Transform, Vector3, EnemyNavAgent> _enemyFactory;
 
@@ -22,12 +25,13 @@ public class EnemySpawner : MonoBehaviour
 
     private void SpawnAllEnemies()
     {
-        for (int i = 0; i < enemyDefinitions.Length; i++)
+        for (int i = 0; i < totalEnemyCount; i++)
         {
-            var definition = enemyDefinitions[i];
-            var spawnPoint = spawnPoints[i % spawnPoints.Length]; // circular
+            // Random düşman ve spawn noktası seç
+            var randomDefinition = availableEnemyTypes[Random.Range(0, availableEnemyTypes.Count)];
+            var spawnPoint = spawnPoints[i % spawnPoints.Length];
 
-            _enemyFactory.Create(definition, baseTarget, spawnPoint.position);
+            _enemyFactory.Create(randomDefinition, baseTarget, spawnPoint.position);
         }
     }
 }

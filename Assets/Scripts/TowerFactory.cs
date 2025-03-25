@@ -2,27 +2,27 @@ using DG.Tweening;
 using UnityEngine;
 using Zenject;
 
-public class TowerFactory : IFactory<Vector3, Transform, Tower>
+public class TowerFactory : IFactory<TowerData, Vector3, Tower>
 {
-    private readonly GameObject _prefab;
     private readonly DiContainer _container;
+    private readonly TowerManager _towerManager;
 
-    public TowerFactory(GameObject prefab, DiContainer container)
+    public TowerFactory(DiContainer container,TowerManager towerManager)
     {
-        _prefab = prefab;
         _container = container;
+        _towerManager = towerManager;
     }
 
-    public Tower Create(Vector3 position, Transform parent)
+    public Tower Create(TowerData data, Vector3 pos)
     {
-        Debug.Log("Creating Tower");
-        var lastPos = new Vector3(position.x, _prefab.transform.localScale.y, position.z);
-        var obj = _container.InstantiatePrefab(_prefab, lastPos, Quaternion.identity, parent);
+        var prefab = data.prefab;
+        var obj = _container.InstantiatePrefab(prefab, pos, Quaternion.identity, null);
+        var tower = obj.GetComponent<Tower>();
 
-        var objScale = obj.transform.localScale;
-        obj.transform.localScale = Vector3.zero;
-        obj.transform.DOScale(objScale, 0.1f).SetEase(Ease.OutBack);
-        
-        return obj.GetComponent<Tower>();
+        var strategy = obj.GetComponent<ITowerFiringStrategy>();
+        tower.Initialize(data, strategy, _towerManager);
+        _towerManager.RegisterTower(tower);
+
+        return tower;
     }
 }

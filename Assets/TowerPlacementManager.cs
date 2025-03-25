@@ -1,51 +1,64 @@
+using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using Zenject;
 
-public class TowerPlacementManager : MonoBehaviour
+public class TowerPlacementManager : MonoBehaviour, ITowerPlacer
 {
-    [Inject] private TowerFactory _towerFactory;
+    [SerializeField] private TowerSelectionPanel selectionPanel;
 
-    [SerializeField] private Camera mainCamera;
-    [SerializeField] private LayerMask placementMask;
-    [SerializeField] private float placementDuration = 5f;
-    [SerializeField] private TowerData towerData;
+    private GridSlot _currentSlot;
+    private bool _isPlacementMode;
 
-    [SerializeField] private bool canPlace = false;
-
-    private void Start()
+    public bool IsPlacementMode => _isPlacementMode;
+    
+    private IFactory<TowerData, Vector3, Tower> _towerFactory;
+    
+    [Inject]
+    public void Construct(IFactory<TowerData, Vector3, Tower> towerFactory)
     {
-        EnablePlacement(towerData); // for testt
+        _towerFactory = towerFactory;
     }
-
-    public void EnablePlacement(TowerData data)
-    {
-        towerData = data;
-        canPlace = true;
-        Invoke(nameof(DisablePlacement), placementDuration);
-    }
-
-    private void DisablePlacement()
-    {
-        canPlace = false;
-    }
+    
+    public void EnablePlacement() => _isPlacementMode = true;
+    public void DisablePlacement() => _isPlacementMode = false;
 
     private void Update()
     {
-        if (!canPlace || Input.GetMouseButtonDown(1)) return;
-
-        if (Input.GetMouseButtonDown(0))
+        if (selectionPanel.IsOpen && Input.GetMouseButtonDown(0))
         {
-            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit, 100f, placementMask))
-            {
-                Transform slot = hit.transform;
+            if (EventSystem.current.IsPointerOverGameObject())
+                return;
 
-                if (slot.childCount == 0)
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                if (!hit.collider.TryGetComponent<GridSlot>(out _))
                 {
-                    var tower = _towerFactory.Create(slot.position, slot);
-                    tower.Initialize(towerData);
+                    selectionPanel.Hide();
+                    _currentSlot = null;
                 }
             }
         }
+    }
+
+    public void OpenTowerSelection(GridSlot slot)
+    {
+        _currentSlot = slot;
+        selectionPanel.Show();
+    }
+
+    public void PlaceSelectedTower(TowerData data)
+    {
+        if (_currentSlot == null) return;
+
+        var position = _currentSlot.transform.position;
+        _towerFactory.Create(data, position);
+        
+        
+        
+
+        selectionPanel.Hide();
+        _currentSlot = null;
     }
 }

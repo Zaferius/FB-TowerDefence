@@ -17,5 +17,5 @@ MonoBehaviour:
   speed: 3
   attackPower: 5
   attackCooldown: 0.5
-  attackRange: 25
+  attackRange: 2
   prefab: {fileID: 7411337395877470646, guid: d0e2c501de4d2184fb91ca6466ddfe04, type: 3}

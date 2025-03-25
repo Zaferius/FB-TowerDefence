@@ -14,6 +14,8 @@ public class EnemyNavAgent : MonoBehaviour
     private IEnemyBehavior _behavior;
 
     [Inject] private TowerManager _towerManager;
+    
+    
 
     public void Setup(EnemyDefinition definition, Transform target)
     {
@@ -26,7 +28,7 @@ public class EnemyNavAgent : MonoBehaviour
         _agent = GetComponent<NavMeshAgent>();
         _health = GetComponent<Health>();
 
-        _health.OnDied += OnDied;
+        _health.OnDeath += OnDied;
     }
 
     private void Start()
@@ -34,7 +36,9 @@ public class EnemyNavAgent : MonoBehaviour
         _agent.speed = _definition.speed;
         _health.SetMaxHealth(_definition.health);
 
-        // Davranış seçimi
+        var attackHandler = GetComponent<IAttackHandler>();
+        attackHandler?.InitializeFromDefinition(_definition);
+
         _behavior = _definition.type switch
         {
             EnemyData.EnemyType.Attacker => new AttackerBehavior(
@@ -43,14 +47,21 @@ public class EnemyNavAgent : MonoBehaviour
                 transform,
                 _definition.attackPower,
                 _definition.attackRange,
-                _definition.attackCooldown),
+                _definition.attackCooldown,
+                _target,      
+                attackHandler     
+            ),
 
-            EnemyData.EnemyType.Runner => new RunnerBehavior(_agent, _target, transform),
+            EnemyData.EnemyType.Runner => new RunnerBehavior(
+                _agent,
+                _target,
+                transform
+            ),
 
             _ => null
         };
 
-        if (_definition.type is EnemyData.EnemyType.Runner or EnemyData.EnemyType.Attacker)
+        if (_definition.type == EnemyData.EnemyType.Runner)
         {
             _agent.SetDestination(_target.position);
         }

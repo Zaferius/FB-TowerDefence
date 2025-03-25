@@ -98,8 +98,9 @@ GameObject:
   - component: {fileID: 1445426909958392711}
   - component: {fileID: 681215843328201230}
   - component: {fileID: 7719752211055204069}
+  - component: {fileID: 5182687975454258506}
   m_Layer: 0
-  m_Name: Tower
+  m_Name: Tower_SingleBarrel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -206,12 +207,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42f6f16df286f9742b7cb6699434dacd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentTarget: {fileID: 0}
-  turretHead: {fileID: 3437140375603849583}
-  turretBarrel: {fileID: 1725985797669082562}
-  firePoint: {fileID: 2792554366883980796}
-  projectilePrefab: {fileID: 3797043475157624576, guid: 29e46d0cddb41cd4da05d37e0f632107,
-    type: 3}
 --- !u!114 &7719752211055204069
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -225,6 +220,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+--- !u!114 &5182687975454258506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1293479120018931074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83837671a0fc3284888e67803bedbb2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponHolder: {fileID: 3437140375603849583}
+  weaponBarrel: {fileID: 1725985797669082562}
+  firePoint: {fileID: 2792554366883980796}
+  projectilePrefab: {fileID: 3797043475157624576, guid: 29e46d0cddb41cd4da05d37e0f632107,
+    type: 3}
+  _closestEnemy: {fileID: 0}
 --- !u!1 &2958949982779915139
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class TowerManager : MonoBehaviour
 {
-    private readonly List<Tower> _towers = new();
+    [SerializeField] private List<Tower> _towers = new();
 
     public void RegisterTower(Tower tower)
     {

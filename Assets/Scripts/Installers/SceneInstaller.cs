@@ -1,9 +1,11 @@
-using ScriptableObjects;
+ using ScriptableObjects;
 using UnityEngine;
 using Zenject;
 
 public class SceneInstaller : MonoInstaller
 {
+    [SerializeField] private HealthBarController healthBarPrefab;
+    
     [Header("Scene References")]
     [SerializeField] private TowerManager towerManager;
     [SerializeField] private TowerPlacementManager towerPlacementManager;
@@ -39,6 +41,10 @@ public class SceneInstaller : MonoInstaller
             .AsSingle();
         
         Container.Bind<EnemyManager>().FromComponentInHierarchy().AsSingle();
+        
+        Container.Bind<HealthBarController>()
+            .FromComponentInNewPrefab(healthBarPrefab)
+            .AsTransient();
 
     }
 }

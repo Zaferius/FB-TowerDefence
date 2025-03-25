@@ -40,14 +40,14 @@ public class AttackerBehavior : IEnemyBehavior
     public void Tick()
     {
         _attackTimer -= Time.deltaTime;
-
-        // Eğer hedef kule null veya yok olmuşsa, en yakın kuleyi bul
+        
         if (_currentTargetTower == null)
         {
-            _currentTargetTower = _towerManager.GetClosestTower(_selfTransform.position, _attackRange);
+            _currentTargetTower = _towerManager.GetClosestTower(_selfTransform.position, _attackRange * 5);
 
             if (_currentTargetTower != null)
             {
+                Debug.Log(_currentTargetTower.transform.name);
                 _agent.SetDestination(_currentTargetTower.transform.position);
             }
             else

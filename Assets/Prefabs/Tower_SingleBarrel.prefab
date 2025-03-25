@@ -99,6 +99,7 @@ GameObject:
   - component: {fileID: 681215843328201230}
   - component: {fileID: 7719752211055204069}
   - component: {fileID: 5182687975454258506}
+  - component: {fileID: 2098720084630824855}
   m_Layer: 0
   m_Name: Tower_SingleBarrel
   m_TagString: Untagged
@@ -244,6 +245,20 @@ MonoBehaviour:
   projectilePrefab: {fileID: 3797043475157624576, guid: 29e46d0cddb41cd4da05d37e0f632107,
     type: 3}
   _closestEnemy: {fileID: 0}
+--- !u!114 &2098720084630824855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1293479120018931074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed8de055b17048447b18e6f2f6cd365d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBarPrefab: {fileID: 8625583480818358951, guid: a4eb460eb9acfeb4a84a27608df76df2,
+    type: 3}
 --- !u!1 &2958949982779915139
 GameObject:
   m_ObjectHideFlags: 0

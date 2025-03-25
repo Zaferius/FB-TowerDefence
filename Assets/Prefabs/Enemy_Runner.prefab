@@ -98,6 +98,7 @@ GameObject:
   - component: {fileID: 7615268366432723867}
   - component: {fileID: 6590546221340824267}
   - component: {fileID: 7435736150437722290}
+  - component: {fileID: 2884798936597407784}
   m_Layer: 0
   m_Name: Enemy_Runner
   m_TagString: Enemy
@@ -228,6 +229,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 715db56f90d60434ea45baae1d10a1b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _enemyManager: {fileID: 0}
 --- !u!114 &7435736150437722290
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -241,3 +243,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  curHealth: 10
+--- !u!114 &2884798936597407784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7411337395877470646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed8de055b17048447b18e6f2f6cd365d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBarPrefab: {fileID: 8625583480818358951, guid: a4eb460eb9acfeb4a84a27608df76df2,
+    type: 3}

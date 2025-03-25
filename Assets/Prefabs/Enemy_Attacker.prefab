@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 6590546221340824267}
   - component: {fileID: 7435736150437722290}
   - component: {fileID: 9182234308483169143}
+  - component: {fileID: 484118796124538531}
   m_Layer: 0
   m_Name: Enemy_Attacker
   m_TagString: Enemy
@@ -276,7 +277,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 94
-  tempHealth: 500
+  curHealth: 10
 --- !u!114 &9182234308483169143
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -291,6 +292,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stick: {fileID: 138291549157919162}
   damage: 1
+--- !u!114 &484118796124538531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7411337395877470646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed8de055b17048447b18e6f2f6cd365d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBarPrefab: {fileID: 8625583480818358951, guid: a4eb460eb9acfeb4a84a27608df76df2,
+    type: 3}
 --- !u!1 &8186398940110705399
 GameObject:
   m_ObjectHideFlags: 0

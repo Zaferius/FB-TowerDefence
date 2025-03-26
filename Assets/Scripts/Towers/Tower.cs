@@ -5,7 +5,7 @@ using DG.Tweening;
 using UnityEngine;
 using Zenject;
 
-public class Tower : MonoBehaviour
+public class Tower : MonoBehaviour,IDamageable
 {
     private IHealth _health;
     private ITowerFiringStrategy _firingStrategy;
@@ -161,5 +161,27 @@ public class Tower : MonoBehaviour
                 mat.DOColor(targetColor, 0.2f).SetEase(Ease.OutQuad);
             }
         }
+    }
+
+    public void OnDamaged()
+    {
+        foreach (var rend in renderersToColorize)
+        {
+            foreach (var mat in rend.materials)
+            {
+                var originalColor = mat.color;
+                
+                mat.DOColor(Color.white, 0.1f)
+                    .SetLoops(2, LoopType.Yoyo)
+                    .SetEase(Ease.OutQuad)
+                    .OnComplete(() => mat.color = originalColor);
+            }
+        }
+        
+        var defScale = transform.localScale;
+        transform.DOPunchScale(new Vector3(.1f, .1f, .1f), 0.1f).OnComplete(() =>
+        {
+            transform.DOScale(defScale, 0.15f);
+        });
     }
 }

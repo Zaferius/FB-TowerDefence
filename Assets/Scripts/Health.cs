@@ -21,6 +21,14 @@ public class Health: MonoBehaviour, IHealth
         curHealth -= amount;
         OnHealthChanged?.Invoke(curHealth, maxHealth);
 
+        
+        if (TryGetComponent<IDamageable>(out var feedback))
+        {
+            feedback.OnDamaged();
+        }
+        
+        
+        
         if (curHealth <= 0)
         {
             OnDeath?.Invoke();
@@ -38,4 +46,6 @@ public class Health: MonoBehaviour, IHealth
         maxHealth = value;
         curHealth = value;
     }
+
+   
 }

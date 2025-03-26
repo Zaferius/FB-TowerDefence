@@ -30,6 +30,14 @@ public class DoubleBarrelFiring : MonoBehaviour, ITowerFiringStrategy
             Recoil(currentIndex);
 
             _nextFirePointIndex++; 
+            
+            //Particle
+            if (_data.attackEffectPrefab != null)
+            {
+                var effect = Instantiate(_data.attackEffectPrefab, firePoint.position, firePoint.rotation);
+                Destroy(effect, 1.5f);
+            }
+
         });
         
     }

@@ -1,11 +1,12 @@
 using System;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
 
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(Health))]
-public class EnemyNavAgent : MonoBehaviour
+public class EnemyNavAgent : MonoBehaviour, IDamageable
 {
     private EnemyDefinition _definition;
     
@@ -91,5 +92,15 @@ public class EnemyNavAgent : MonoBehaviour
     private void OnDied()
     {
         Destroy(gameObject);
+    }
+
+    public void OnDamaged()
+    {
+        //DOTween.Kill(this);
+        var defScale = transform.localScale;
+        transform.DOPunchScale(new Vector3(.1f, .1f, .1f), 0.1f).SetId(this).OnComplete(() =>
+        {
+            transform.DOScale(defScale, 0.15f).SetId(this);
+        });
     }
 }

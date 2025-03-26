@@ -18,6 +18,7 @@ public class TowerData : ScriptableObject
     public int attackPower;
 
     [Header("Appearance")]
+    public GameObject attackEffectPrefab; 
     public Color towerColor = Color.white;
     
     [Header("Prefab")]

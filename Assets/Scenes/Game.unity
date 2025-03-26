@@ -799,7 +799,10 @@ MonoBehaviour:
   baseTarget: {fileID: 2031247515}
   waveEnemies:
   - {fileID: 11400000, guid: f0e4398d79067144090055934ce43e34, type: 2}
-  - {fileID: 11400000, guid: 0f4214266de7a7247b216a91f621c208, type: 2}
+  - {fileID: 11400000, guid: f0e4398d79067144090055934ce43e34, type: 2}
+  - {fileID: 11400000, guid: f0e4398d79067144090055934ce43e34, type: 2}
+  - {fileID: 11400000, guid: f0e4398d79067144090055934ce43e34, type: 2}
+  - {fileID: 11400000, guid: f0e4398d79067144090055934ce43e34, type: 2}
   spawnPoints:
   - {fileID: 1513538842}
   - {fileID: 660408555}

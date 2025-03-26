@@ -17,6 +17,8 @@ MonoBehaviour:
   range: 8
   attackTimer: 0.65
   attackPower: 7
+  attackEffectPrefab: {fileID: 5620006819430003508, guid: 23c94999b1fd9404092b0cbc54238e43,
+    type: 3}
   towerColor: {r: 1, g: 0.5896446, b: 0.21226418, a: 1}
   prefab: {fileID: 1293479120018931074, guid: cd01d2f4623a07147be685ca79a02071, type: 3}
   projectilePrefab: {fileID: 3797043475157624576, guid: 29e46d0cddb41cd4da05d37e0f632107,

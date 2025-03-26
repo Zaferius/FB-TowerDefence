@@ -24,6 +24,14 @@ public class SingleBarrelFiring : MonoBehaviour, ITowerFiringStrategy
             var projectile = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity).GetComponent<Projectile>();
             projectile.SetTarget(target.transform,_data.attackPower);
             Recoil();
+            
+            //Particle test >>
+            if (_data.attackEffectPrefab != null)
+            {
+                var effect = Instantiate(_data.attackEffectPrefab, firePoint.position, firePoint.rotation);
+                Destroy(effect, 1.5f);
+            }
+            
         });
         
     }

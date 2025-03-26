@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1aaffcc97a2d6f84aaf74326b1e6f6b8, type: 3}
-  m_Name: DoubleBarrel_Tower
+  m_Name: Tower_DoubleBarrel
   m_EditorClassIdentifier: 
   type: 1
   prefab: {fileID: 8158456752894054155, guid: aa8e149f717d7a242a37cd74b376aee6, type: 3}

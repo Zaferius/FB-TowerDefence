@@ -22,7 +22,6 @@ public class Tower : MonoBehaviour
 
     [Header("Attack")]
     private float _timer;
-    [SerializeField] private float attackCooldown = 1f;
     
     
     [Header("Detection System")]
@@ -45,14 +44,14 @@ public class Tower : MonoBehaviour
             hc.SetMaxHealth(data.health); 
         }
     }
-    
-    public void OnEnemyEnterRange(EnemyNavAgent enemy)
+
+    private void OnEnemyEnterRange(EnemyNavAgent enemy)
     {
         if (!_enemiesInRange.Contains(enemy))
             _enemiesInRange.Add(enemy);
     }
 
-    public void OnEnemyExitRange(EnemyNavAgent enemy)
+    private void OnEnemyExitRange(EnemyNavAgent enemy)
     {
         _enemiesInRange.Remove(enemy);
         _attackers.Remove(enemy);

@@ -361,8 +361,8 @@ GameObject:
   - component: {fileID: 7787802994908820855}
   - component: {fileID: 4160572861808973543}
   - component: {fileID: 5785689093831725649}
-  - component: {fileID: 7597807076681886183}
   - component: {fileID: 8786059358589747868}
+  - component: {fileID: 7597807076681886183}
   m_Layer: 0
   m_Name: Tower_DoubleBarrel
   m_TagString: Untagged
@@ -488,8 +488,21 @@ MonoBehaviour:
   _enemiesInRange: []
   _currentlyInRange: []
   _attackers: []
-  attackCooldown: 1
   detectionCheckInterval: 0.2
+--- !u!114 &8786059358589747868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8158456752894054155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed8de055b17048447b18e6f2f6cd365d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBarPrefab: {fileID: 8625583480818358951, guid: a4eb460eb9acfeb4a84a27608df76df2,
+    type: 3}
 --- !u!114 &7597807076681886183
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -510,18 +523,4 @@ MonoBehaviour:
   - {fileID: 1694848210013606640}
   - {fileID: 7815213882564516078}
   projectilePrefab: {fileID: 3797043475157624576, guid: 29e46d0cddb41cd4da05d37e0f632107,
-    type: 3}
---- !u!114 &8786059358589747868
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8158456752894054155}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed8de055b17048447b18e6f2f6cd365d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthBarPrefab: {fileID: 8625583480818358951, guid: a4eb460eb9acfeb4a84a27608df76df2,
     type: 3}

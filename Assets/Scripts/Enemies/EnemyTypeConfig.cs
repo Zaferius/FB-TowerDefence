@@ -1,10 +1,17 @@
-using ScriptableObjects;
+
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "EnemyDefinition", menuName = "TD/Enemy Definition")]
 public class EnemyDefinition : ScriptableObject
 {
-    public EnemyData.EnemyType type;
+    public EnemyType type;
+
+    public enum EnemyType
+    {
+        Runner,
+        Attacker,
+        Test
+    }
 
     [Header("Stats")]
     public float health;

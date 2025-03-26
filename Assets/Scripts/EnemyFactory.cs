@@ -1,8 +1,6 @@
 using System.Linq;
 using UnityEngine;
 using Zenject;
-using ScriptableObjects;
-
 public class EnemyFactory : IFactory<EnemyDefinition, Transform, Vector3, EnemyNavAgent>
 {
     private readonly DiContainer _container;

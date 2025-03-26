@@ -9,35 +9,20 @@ public class SingleBarrelFiring : MonoBehaviour, ITowerFiringStrategy
     [SerializeField] private GameObject projectilePrefab;
 
     private TowerData _data;
-    private float _timer;
 
     [SerializeField] private EnemyNavAgent _closestEnemy;
 
     public void Initialize(TowerData data)
     {
         _data = data;
-        _timer = 0f;
     }
-
-    /*public void Tick()
-    {
-        _timer -= Time.deltaTime;
-
-        var target = EnemyUtils.FindClosestEnemy(transform.position, _data.range);
-        _closestEnemy = target;
-        if (target != null && _timer <= 0f)
-        {
-            Fire(target);
-            _timer = 1f / _data.fireRate;
-        }
-    }*/
-
+    
     public void Fire(EnemyNavAgent target)
     {
         weaponHolder.transform.DOLookAt(target.transform.position, 0.2f).SetEase(Ease.OutBack).OnComplete(() =>
         {
             var projectile = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity).GetComponent<Projectile>();
-            projectile.SetTarget(target.transform,_data.damage);
+            projectile.SetTarget(target.transform,_data.attackPower);
             Recoil();
         });
         

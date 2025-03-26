@@ -1,5 +1,4 @@
 using System;
-using ScriptableObjects;
 using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
@@ -45,7 +44,7 @@ public class EnemyNavAgent : MonoBehaviour
 
         _behavior = _definition.type switch
         {
-            EnemyData.EnemyType.Attacker => new AttackerBehavior(
+            EnemyDefinition.EnemyType.Attacker => new AttackerBehavior(
                 _agent,
                 _towerManager,
                 transform,
@@ -56,7 +55,7 @@ public class EnemyNavAgent : MonoBehaviour
                 attackHandler     
             ),
 
-            EnemyData.EnemyType.Runner => new RunnerBehavior(
+            EnemyDefinition.EnemyType.Runner => new RunnerBehavior(
                 _agent,
                 _target,
                 transform
@@ -65,7 +64,7 @@ public class EnemyNavAgent : MonoBehaviour
             _ => null
         };
 
-        if (_definition.type == EnemyData.EnemyType.Runner)
+        if (_definition.type == EnemyDefinition.EnemyType.Runner)
         {
             _agent.SetDestination(_target.position);
         }

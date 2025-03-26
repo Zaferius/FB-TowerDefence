@@ -10,10 +10,13 @@ public class TowerData : ScriptableObject
     }
     
     public TowerType type;
-    public GameObject prefab;
-    [Space(10)]
+    
+    [Header("Stats")]
     public float health;
     public float range;
     public float attackTimer;
-    public int damage;
+    public int attackPower;
+    
+    [Header("Prefab")]
+    public GameObject prefab;
 }

@@ -15,30 +15,18 @@ public class DoubleBarrelFiring : MonoBehaviour, ITowerFiringStrategy
     public void Initialize(TowerData data)
     {
         _data = data;
-        _timer = 0f;
     }
-
-    /*public void Tick()
-    {
-        _timer -= Time.deltaTime;
-
-        var target = EnemyUtils.FindClosestEnemy(transform.position, _data.range);
-        if (target != null && _timer <= 0f)
-        {
-            Fire(target);
-            _timer = 1f / _data.fireRate;
-        }
-    }*/
+    
 
     public void Fire(EnemyNavAgent target)
     {
         weaponHolder.transform.DOLookAt(target.transform.position, 0.2f).SetEase(Ease.OutBack).OnComplete(() =>
         {
-            int currentIndex = _nextFirePointIndex % firePoints.Length;
+            var currentIndex = _nextFirePointIndex % firePoints.Length;
 
-            Transform firePoint = firePoints[currentIndex];
+            var firePoint = firePoints[currentIndex];
             var projectile = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity).GetComponent<Projectile>();
-            projectile.SetTarget(target.transform,_data.damage);
+            projectile.SetTarget(target.transform,_data.attackPower);
 
             Recoil(currentIndex);
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using UnityEngine;
 using Zenject;
 
@@ -10,7 +11,7 @@ public class Tower : MonoBehaviour
     private ITowerFiringStrategy _firingStrategy;
     private TowerManager _towerManager;
    
-    
+    [SerializeField] private Renderer[] renderersToColorize;
     [SerializeField] private List<EnemyNavAgent> _enemiesInRange = new();
     [SerializeField] private  List<EnemyNavAgent> _currentlyInRange = new();
     [SerializeField] private List<EnemyNavAgent> _attackers = new();
@@ -43,8 +44,10 @@ public class Tower : MonoBehaviour
         {
             hc.SetMaxHealth(data.health); 
         }
+        
+        AnimateSpawnColor(_towerData.towerColor);
     }
-
+    
     private void OnEnemyEnterRange(EnemyNavAgent enemy)
     {
         if (!_enemiesInRange.Contains(enemy))
@@ -146,5 +149,17 @@ public class Tower : MonoBehaviour
     private void OnDestroy()
     {
         _towerManager?.UnregisterTower(this);
+    }
+    
+    private void AnimateSpawnColor(Color targetColor)
+    {
+        foreach (var rend in renderersToColorize)
+        {
+            foreach (var mat in rend.materials)
+            {
+                mat.color = Color.white;
+                mat.DOColor(targetColor, 0.2f).SetEase(Ease.OutQuad);
+            }
+        }
     }
 }

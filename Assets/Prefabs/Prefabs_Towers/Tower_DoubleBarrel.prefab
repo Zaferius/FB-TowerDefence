@@ -485,6 +485,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42f6f16df286f9742b7cb6699434dacd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  renderersToColorize:
+  - {fileID: 8279844331117190237}
+  - {fileID: 1470314692027003094}
+  - {fileID: 7083124607981938393}
+  - {fileID: 3095340867393734577}
   _enemiesInRange: []
   _currentlyInRange: []
   _attackers: []

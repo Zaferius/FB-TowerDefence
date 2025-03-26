@@ -208,10 +208,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42f6f16df286f9742b7cb6699434dacd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  renderersToColorize:
+  - {fileID: 5170209037556968049}
+  - {fileID: 1671174869402013531}
+  - {fileID: 3763152894548503}
   _enemiesInRange: []
   _currentlyInRange: []
   _attackers: []
-  attackCooldown: 1
   detectionCheckInterval: 0.2
 --- !u!114 &7719752211055204069
 MonoBehaviour:

@@ -15,7 +15,8 @@ public class WaveManager : MonoBehaviour
     public static event Action<int> OnWaveStarted;
     public static event Action OnPlacementStarted;
 
-    private void Start()
+    
+    public void StartGame()
     {
         CurrentWave = 0;
         ui.SetTotalWaves(totalWaves);

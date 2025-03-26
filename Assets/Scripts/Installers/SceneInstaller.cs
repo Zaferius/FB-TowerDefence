@@ -44,6 +44,9 @@ public class SceneInstaller : MonoInstaller
         Container.Bind<HealthBarController>()
             .FromComponentInNewPrefab(healthBarPrefab)
             .AsTransient();
+        
+        Container.Bind<WaveManager>().FromComponentInHierarchy().AsSingle();
+
 
     }
 }

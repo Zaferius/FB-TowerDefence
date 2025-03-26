@@ -13,8 +13,11 @@ MonoBehaviour:
   m_Name: Tower_SingleBarrel
   m_EditorClassIdentifier: 
   type: 0
-  health: 8888
+  health: 50
   range: 8
   attackTimer: 0.65
   attackPower: 7
+  towerColor: {r: 1, g: 0.5896446, b: 0.21226418, a: 1}
   prefab: {fileID: 1293479120018931074, guid: cd01d2f4623a07147be685ca79a02071, type: 3}
+  projectilePrefab: {fileID: 3797043475157624576, guid: 29e46d0cddb41cd4da05d37e0f632107,
+    type: 3}

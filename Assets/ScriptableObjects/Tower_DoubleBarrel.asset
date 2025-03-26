@@ -13,8 +13,11 @@ MonoBehaviour:
   m_Name: Tower_DoubleBarrel
   m_EditorClassIdentifier: 
   type: 1
-  health: 153
+  health: 35
   range: 6
   attackTimer: 0.3
   attackPower: 5
+  towerColor: {r: 0.24056602, g: 0.49835542, b: 1, a: 1}
   prefab: {fileID: 8158456752894054155, guid: aa8e149f717d7a242a37cd74b376aee6, type: 3}
+  projectilePrefab: {fileID: 3797043475157624576, guid: 2c2ca0a1b320fbc4ca34f6bcf50e900f,
+    type: 3}

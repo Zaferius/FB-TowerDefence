@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2645425839479172449}
   - component: {fileID: 2202668547148901174}
   m_Layer: 0
-  m_Name: TowerProjectile
+  m_Name: Projectile_Single
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

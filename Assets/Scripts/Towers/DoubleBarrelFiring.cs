@@ -6,7 +6,6 @@ public class DoubleBarrelFiring : MonoBehaviour, ITowerFiringStrategy
     [SerializeField] private Transform weaponHolder;
     [SerializeField] private Transform[] weaponBarrels;
     [SerializeField] private Transform[] firePoints;
-    [SerializeField] private GameObject projectilePrefab;
 
     private TowerData _data;
     private float _timer;
@@ -25,7 +24,7 @@ public class DoubleBarrelFiring : MonoBehaviour, ITowerFiringStrategy
             var currentIndex = _nextFirePointIndex % firePoints.Length;
 
             var firePoint = firePoints[currentIndex];
-            var projectile = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity).GetComponent<Projectile>();
+            var projectile = Instantiate(_data.projectilePrefab, firePoint.position, Quaternion.identity).GetComponent<Projectile>();
             projectile.SetTarget(target.transform,_data.attackPower);
 
             Recoil(currentIndex);

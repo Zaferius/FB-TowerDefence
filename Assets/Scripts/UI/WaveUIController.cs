@@ -55,6 +55,6 @@ public class WaveUIController : MonoBehaviour
             return;
         }
 
-        timerText.text = $"Next wave in: {timer:F1}";
+        timerText.text = $"Next wave in: {Mathf.CeilToInt(timer)}";
     }
 }

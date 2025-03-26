@@ -25,6 +25,9 @@ public class TowerPlacementManager : MonoBehaviour, ITowerPlacer
 
     private void Update()
     {
+        if (GameStateManager.CurrentState != GameStateManager.GameState.Playing)
+            return;
+        
         if (selectionPanel.IsOpen && Input.GetMouseButtonDown(0))
         {
             if (EventSystem.current.IsPointerOverGameObject())

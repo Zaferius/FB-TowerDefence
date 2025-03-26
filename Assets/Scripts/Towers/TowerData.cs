@@ -16,7 +16,11 @@ public class TowerData : ScriptableObject
     public float range;
     public float attackTimer;
     public int attackPower;
+
+    [Header("Appearance")]
+    public Color towerColor = Color.white;
     
     [Header("Prefab")]
     public GameObject prefab;
+    public GameObject projectilePrefab;
 }

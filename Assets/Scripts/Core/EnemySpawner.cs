@@ -1,37 +1,46 @@
 using UnityEngine;
 using Zenject;
+using System;
 using System.Collections.Generic;
 
 public class EnemySpawner : MonoBehaviour
 {
     [Header("Spawner Settings")]
     [SerializeField] private Transform baseTarget;
+    [SerializeField] private EnemyDefinition[] waveEnemies;
     [SerializeField] private Transform[] spawnPoints;
-    [SerializeField] private List<EnemyDefinition> availableEnemyTypes;
-    [SerializeField] private int totalEnemyCount = 10;
+    [Inject] private IFactory<EnemyDefinition, Transform, Vector3, EnemyNavAgent> _enemyFactory;
 
-    private IFactory<EnemyDefinition, Transform, Vector3, EnemyNavAgent> _enemyFactory;
-
-    [Inject]
-    public void Construct(IFactory<EnemyDefinition, Transform, Vector3, EnemyNavAgent> factory)
+    [SerializeField] private int _aliveEnemies;
+    private Action _onWaveComplete;
+    
+    public void SpawnWave(int waveNumber, Action onWaveComplete)
     {
-        _enemyFactory = factory;
-    }
+        _onWaveComplete = onWaveComplete;
+        _aliveEnemies = waveEnemies.Length;
 
-    private void Start()
-    {
-        SpawnAllEnemies();
-    }
-
-    private void SpawnAllEnemies()
-    {
-        for (int i = 0; i < totalEnemyCount; i++)
+        for (int i = 0; i < waveEnemies.Length; i++)
         {
-            // Random düşman ve spawn noktası seç
-            var randomDefinition = availableEnemyTypes[Random.Range(0, availableEnemyTypes.Count)];
+            var def = waveEnemies[i];
             var spawnPoint = spawnPoints[i % spawnPoints.Length];
+            var enemy = _enemyFactory.Create(def, baseTarget, spawnPoint.position);
+            
+            var health = enemy.GetComponent<IHealth>();
+            if (health != null)
+            {
+                health.OnDeath += HandleEnemyDeath;
+            }
+            
+        }
+    }
 
-            _enemyFactory.Create(randomDefinition, baseTarget, spawnPoint.position);
+    private void HandleEnemyDeath()
+    {
+        print("Enemy Died");
+        _aliveEnemies--;
+        if (_aliveEnemies <= 0)
+        {
+            _onWaveComplete?.Invoke();
         }
     }
 }

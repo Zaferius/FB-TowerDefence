@@ -8,16 +8,16 @@ using Zenject;
 public class EnemyNavAgent : MonoBehaviour
 {
     private EnemyDefinition _definition;
+    
     private Transform _target;
     private NavMeshAgent _agent;
-    public IHealth Health { get; private set; }
-    private Health _health;
+   
+    private IHealth _health;
+    public IHealth Health => _health;
     private IEnemyBehavior _behavior;
 
     [Inject] private TowerManager _towerManager;
-    
-    [Inject] [SerializeField] private EnemyManager _enemyManager;
-    
+    [Inject] private EnemyManager _enemyManager;
 
     public void Setup(EnemyDefinition definition, Transform target)
     {
@@ -28,10 +28,23 @@ public class EnemyNavAgent : MonoBehaviour
     private void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
-        _health = GetComponent<Health>();
-        Health = GetComponent<IHealth>();
-        
-        _health.OnDeath += OnDied;
+        _health = GetComponent<IHealth>();
+    }
+
+    private void OnEnable()
+    {
+        _enemyManager?.RegisterEnemy(this);
+
+        if (_health != null)
+            _health.OnDeath += OnDied;
+    }
+
+    private void OnDisable()
+    {
+        _enemyManager?.UnregisterEnemy(this);
+
+        if (_health != null)
+            _health.OnDeath -= OnDied;
     }
 
     private void Start()
@@ -51,8 +64,8 @@ public class EnemyNavAgent : MonoBehaviour
                 _definition.attackPower,
                 _definition.attackRange,
                 _definition.attackCooldown,
-                _target,      
-                attackHandler     
+                _target,
+                attackHandler
             ),
 
             EnemyDefinition.EnemyType.Runner => new RunnerBehavior(
@@ -75,23 +88,8 @@ public class EnemyNavAgent : MonoBehaviour
         _behavior?.Tick();
     }
 
-    public void TakeDamage(int dmg)
-    {
-        _health.TakeDamage(dmg);
-    }
-
     private void OnDied()
     {
         Destroy(gameObject);
-    }
-
-    private void OnEnable()
-    {
-        _enemyManager?.RegisterEnemy(this);
-    }
-
-    private void OnDisable()
-    {
-        _enemyManager?.UnregisterEnemy(this);
     }
 }

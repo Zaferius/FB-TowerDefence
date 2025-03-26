@@ -25,7 +25,7 @@ public class Projectile : MonoBehaviour
 
         if (!(Vector3.Distance(transform.position, target.position) < 0.2f)) return;
         
-        var enemy = target.GetComponent<EnemyNavAgent>();
+        var enemy = target.GetComponent<IHealth>();
         if (enemy != null)
         {
             enemy.TakeDamage(damage);

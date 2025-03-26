@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: EnemyTypeConfig_Runner
   m_EditorClassIdentifier: 
   type: 0
-  health: 1
-  speed: 2
+  health: 50
+  speed: 1.5
+  attackPower: 0
   attackCooldown: 0
   attackRange: 0
   prefab: {fileID: 7411337395877470646, guid: e7ba901bcecbad1458382753fa9f6b98, type: 3}

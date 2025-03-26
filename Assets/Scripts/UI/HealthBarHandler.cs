@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class HealthBarHandler : MonoBehaviour
@@ -12,7 +13,7 @@ public class HealthBarHandler : MonoBehaviour
     {
         _health = GetComponent<IHealth>();
     }
-
+    
     private void Start()
     {
         if (_health != null && healthBarPrefab != null)
@@ -20,7 +21,7 @@ public class HealthBarHandler : MonoBehaviour
             _instance = Instantiate(healthBarPrefab, Vector3.zero, Quaternion.identity, transform);
             _instance.transform.localPosition = Vector3.up * 2.5f;
             _instance.SetVisible(false);
-
+            
             _health.OnHealthChanged += OnHealthChanged;
         }
     }

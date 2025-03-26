@@ -36,7 +36,6 @@ public class EnemySpawner : MonoBehaviour
 
     private void HandleEnemyDeath()
     {
-        print("Enemy Died");
         _aliveEnemies--;
         if (_aliveEnemies <= 0)
         {

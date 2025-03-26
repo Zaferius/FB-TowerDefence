@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using System;
 
 public class WaveUIController : MonoBehaviour
 {
@@ -14,33 +15,37 @@ public class WaveUIController : MonoBehaviour
 
     private void OnEnable()
     {
+        WaveManager.OnWavesInitialized += SetTotalWaves;
         WaveManager.OnWaveStarted += HandleWaveStarted;
         WaveManager.OnPlacementStarted += HandlePlacementStarted;
     }
 
     private void OnDisable()
     {
+        WaveManager.OnWavesInitialized -= SetTotalWaves;
         WaveManager.OnWaveStarted -= HandleWaveStarted;
         WaveManager.OnPlacementStarted -= HandlePlacementStarted;
     }
 
-    public void SetTotalWaves(int total)
+    private void SetTotalWaves(int total)
     {
         totalWaves = total;
+        currentWave = 0; // oyun başı
+        UpdateWaveText();
     }
 
     private void HandleWaveStarted(int waveNumber)
     {
         currentWave = waveNumber;
         isPlacementActive = false;
-        waveText.text = $"Wave: {currentWave} / {totalWaves}";
-        timerText.text = ""; // temizle
+        UpdateWaveText();
+        timerText.text = "";
     }
 
     private void HandlePlacementStarted()
     {
         isPlacementActive = true;
-        timer = 5f; // yerleştirme süresi
+        timer = 5f;
     }
 
     private void Update()
@@ -48,13 +53,20 @@ public class WaveUIController : MonoBehaviour
         if (!isPlacementActive) return;
 
         timer -= Time.deltaTime;
+
         if (timer <= 0f)
         {
             isPlacementActive = false;
             timerText.text = "";
-            return;
         }
+        else
+        {
+            timerText.text = $"Next wave in: {Mathf.CeilToInt(timer)}";
+        }
+    }
 
-        timerText.text = $"Next wave in: {Mathf.CeilToInt(timer)}";
+    private void UpdateWaveText()
+    {
+        waveText.text = $"Wave: {currentWave} / {totalWaves}";
     }
 }

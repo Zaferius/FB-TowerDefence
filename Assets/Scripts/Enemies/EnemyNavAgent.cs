@@ -66,7 +66,8 @@ public class EnemyNavAgent : MonoBehaviour, IDamageable
                 _definition.attackRange,
                 _definition.attackCooldown,
                 _target,
-                attackHandler
+                attackHandler,
+                _definition.targetSearchRadius
             ),
 
             EnemyDefinition.EnemyType.Runner => new RunnerBehavior(

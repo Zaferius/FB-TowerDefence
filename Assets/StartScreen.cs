@@ -18,8 +18,6 @@ public class StartScreen : MonoBehaviour
 
     public void OnStartButtonPressed()
     {
-        
-        print("test");
         GameStateManager.StartGame();
 
         touchToText.SetActive(false);
@@ -28,7 +26,7 @@ public class StartScreen : MonoBehaviour
             canvasGroup.gameObject.SetActive(false);
         });
         
-        _waveManager.StartGame();
+        _waveManager.StartWaveSequence();
     }
 }
 

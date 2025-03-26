@@ -24,11 +24,13 @@ public class StickAttacker : MonoBehaviour,IAttackHandler
             .SetEase(Ease.InBack)
             .OnComplete(() =>
             {
+                stick.DOLocalRotate(Vector3.zero, 0.3f)
+                    .SetEase(Ease.OutBack);
+                
                 if (targetTower.TryGetComponent<IHealth>(out var health))
                     health.TakeDamage(damage);
                 
-                stick.DOLocalRotate(Vector3.zero, 0.3f)
-                    .SetEase(Ease.OutBack);
+               
             });
     }
 

@@ -27,8 +27,6 @@ public class Health: MonoBehaviour, IHealth
             feedback.OnDamaged();
         }
         
-        
-        
         if (curHealth <= 0)
         {
             OnDeath?.Invoke();

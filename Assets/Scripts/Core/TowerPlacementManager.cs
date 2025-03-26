@@ -38,7 +38,7 @@ public class TowerPlacementManager : MonoBehaviour, ITowerPlacer
             {
                 if (!hit.collider.TryGetComponent<GridSlot>(out _))
                 {
-                    selectionPanel.Hide();
+                    selectionPanel.Hide(0);
                     _currentSlot = null;
                 }
             }
@@ -57,11 +57,8 @@ public class TowerPlacementManager : MonoBehaviour, ITowerPlacer
 
         var position = _currentSlot.transform.position;
         _towerFactory.Create(data, position);
-        
-        
-        
 
-        selectionPanel.Hide();
+        selectionPanel.Hide(0);
         _currentSlot = null;
     }
 }

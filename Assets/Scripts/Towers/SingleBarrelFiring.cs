@@ -6,8 +6,7 @@ public class SingleBarrelFiring : MonoBehaviour, ITowerFiringStrategy
     [SerializeField] private Transform weaponHolder;
     [SerializeField] private Transform weaponBarrel;
     [SerializeField] private Transform firePoint;
-    [SerializeField] private GameObject projectilePrefab;
-
+    
     private TowerData _data;
 
     [SerializeField] private EnemyNavAgent _closestEnemy;
@@ -21,7 +20,7 @@ public class SingleBarrelFiring : MonoBehaviour, ITowerFiringStrategy
     {
         weaponHolder.transform.DOLookAt(target.transform.position, 0.2f).SetEase(Ease.OutBack).OnComplete(() =>
         {
-            var projectile = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity).GetComponent<Projectile>();
+            var projectile = Instantiate(_data.projectilePrefab, firePoint.position, Quaternion.identity).GetComponent<Projectile>();
             projectile.SetTarget(target.transform,_data.attackPower);
             Recoil();
             

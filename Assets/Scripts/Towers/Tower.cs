@@ -10,6 +10,8 @@ public class Tower : MonoBehaviour,IDamageable
     private IHealth _health;
     private ITowerFiringStrategy _firingStrategy;
     private TowerManager _towerManager;
+    private GridSlot _ownerSlot;
+    
    
     [SerializeField] private Renderer[] renderersToColorize;
     [SerializeField] private List<EnemyNavAgent> _enemiesInRange = new();
@@ -20,6 +22,7 @@ public class Tower : MonoBehaviour,IDamageable
     
     private TowerData _towerData;
     [Inject] private EnemyManager _enemyManager;
+    
 
     [Header("Attack")]
     private float _timer;
@@ -30,7 +33,7 @@ public class Tower : MonoBehaviour,IDamageable
     private float _detectionTimer;
     
     
-    public void Initialize(TowerData data, ITowerFiringStrategy strategy, TowerManager towerManager)
+    public void Initialize(TowerData data, ITowerFiringStrategy strategy, TowerManager towerManager, GridSlot slot)
     {
         _towerData = data;
         _health = GetComponent<IHealth>();
@@ -38,11 +41,13 @@ public class Tower : MonoBehaviour,IDamageable
         _towerManager = towerManager;
         _towerManager.RegisterTower(this);
         _firingStrategy.Initialize(data);
+        _ownerSlot = slot;
         _timer = 0;
 
         if (_health is Health hc)
         {
             hc.SetMaxHealth(data.health); 
+            hc.OnDeath += HandleDeath;
         }
         
         AnimateSpawnColor(_towerData.towerColor);
@@ -165,7 +170,7 @@ public class Tower : MonoBehaviour,IDamageable
 
     public void OnDamaged()
     {
-        foreach (var rend in renderersToColorize)
+        /*foreach (var rend in renderersToColorize)
         {
             foreach (var mat in rend.materials)
             {
@@ -176,12 +181,19 @@ public class Tower : MonoBehaviour,IDamageable
                     .SetEase(Ease.OutQuad)
                     .OnComplete(() => mat.color = originalColor);
             }
-        }
+        }*/
         
-        var defScale = transform.localScale;
+        
         transform.DOPunchScale(new Vector3(.1f, .1f, .1f), 0.1f).OnComplete(() =>
         {
-            transform.DOScale(defScale, 0.15f);
+            transform.DOScale(Vector3.one, 0.15f);
         });
+    }
+    
+    private void HandleDeath()
+    {
+        _ownerSlot?.ClearOccupied();
+        _towerManager.UnregisterTower(this);
+        Destroy(gameObject);
     }
 }

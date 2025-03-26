@@ -9,8 +9,7 @@ public class EnemyDefinition : ScriptableObject
     public enum EnemyType
     {
         Runner,
-        Attacker,
-        Test
+        Attacker
     }
 
     [Header("Stats")]
@@ -19,7 +18,6 @@ public class EnemyDefinition : ScriptableObject
     public int attackPower;
     public float attackCooldown;
     public float attackRange;
-    public float targetSearchRadius = 10f;
 
     [Header("Prefab")]
     public GameObject prefab;

@@ -4,6 +4,7 @@ using Zenject;
 
 public class GridSlot : MonoBehaviour
 {
+    private bool _isOccupied = false;
     private bool _isPlaceable = false;
     
     private ITowerPlacer _towerPlacer;
@@ -20,7 +21,7 @@ public class GridSlot : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (!_isPlaceable) return;
+        if (!_isPlaceable || _isOccupied) return;
         _towerPlacer.OpenTowerSelection(this);
     }
     
@@ -38,6 +39,7 @@ public class GridSlot : MonoBehaviour
 
     private void EnablePlacement()
     {
+        if(_isOccupied) return;
         _isPlaceable = true;
         slotRenderer.material.DOColor(placeableColor, 0.2f);
     }
@@ -47,5 +49,27 @@ public class GridSlot : MonoBehaviour
         _isPlaceable = false;
         slotRenderer.material.DOColor(unplaceableColor, 0.2f);
     }
+    
+    private void UpdateVisual()
+    {
+        if (slotRenderer != null)
+        {
+            slotRenderer.material.color = _isPlaceable && !_isOccupied ? placeableColor : unplaceableColor;
+        }
+    }
+    
+    public void SetOccupied()
+    {
+        _isOccupied = true;
+        UpdateVisual();
+    }
+    
+    public void ClearOccupied()
+    {
+        _isOccupied = false;
+        UpdateVisual();
+    }
+
+    public bool IsOccupied() => _isOccupied;
 
 }

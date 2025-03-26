@@ -45,7 +45,7 @@ public class HealthBarHandler : MonoBehaviour
 
         _instance.SetHealth(current, max);
         _instance.SetVisible(true);
-        _visibleTimer = 3f;
+        _visibleTimer = 6f;
         
     }
 

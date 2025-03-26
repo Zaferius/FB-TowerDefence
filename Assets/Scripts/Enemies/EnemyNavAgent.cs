@@ -20,6 +20,8 @@ public class EnemyNavAgent : MonoBehaviour, IDamageable
     [Inject] private TowerManager _towerManager;
     [Inject] private EnemyManager _enemyManager;
 
+    private Vector3 defScale;
+
     public void Setup(EnemyDefinition definition, Transform target)
     {
         _definition = definition;
@@ -30,6 +32,7 @@ public class EnemyNavAgent : MonoBehaviour, IDamageable
     {
         _agent = GetComponent<NavMeshAgent>();
         _health = GetComponent<IHealth>();
+        defScale = transform.localScale;
     }
 
     private void OnEnable()
@@ -66,8 +69,7 @@ public class EnemyNavAgent : MonoBehaviour, IDamageable
                 _definition.attackRange,
                 _definition.attackCooldown,
                 _target,
-                attackHandler,
-                _definition.targetSearchRadius
+                attackHandler
             ),
 
             EnemyDefinition.EnemyType.Runner => new RunnerBehavior(
@@ -97,11 +99,9 @@ public class EnemyNavAgent : MonoBehaviour, IDamageable
 
     public void OnDamaged()
     {
-        //DOTween.Kill(this);
-        var defScale = transform.localScale;
-        transform.DOPunchScale(new Vector3(.1f, .1f, .1f), 0.1f).SetId(this).OnComplete(() =>
+        transform.DOPunchScale(new Vector3(.1f, .1f, .1f), 0.1f).OnComplete(() =>
         {
-            transform.DOScale(defScale, 0.15f).SetId(this);
+            transform.DOScale(defScale, 0.15f);
         });
     }
 }

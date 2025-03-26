@@ -20,7 +20,7 @@ public class SceneInstaller : MonoInstaller
             .AsSingle(); // veya .IfNotBound(); güvenlik için
 
         // Tower Factory
-        Container.Bind<IFactory<TowerData, Vector3, Tower>>()
+        Container.Bind<IFactory<TowerData, Vector3,GridSlot, Tower>>()
             .To<TowerFactory>()
             .AsSingle();
 

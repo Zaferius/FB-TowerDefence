@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -10,19 +9,21 @@ public class AttackerBehavior : IEnemyBehavior
     private readonly int _attackPower;
     private readonly float _attackRange;
     private readonly float _attackCooldown;
-    private readonly float _retargetRange;
     private readonly Transform _baseTarget;
     private readonly IAttackHandler _attackHandler;
 
-
     private Tower _currentTargetTower;
     private float _attackTimer;
-    
-    // 🔁 Yeni hedef aramak için zamanlayıcı
-    private float _retargetTimer = 0f;
-    private readonly float _retargetCooldown = 1f;
 
-    public AttackerBehavior(NavMeshAgent agent, TowerManager towerManager, Transform self, int attackPower, float attackRange, float attackCooldown, Transform baseTarget, IAttackHandler attackHandler, float retargetRange)
+    public AttackerBehavior(
+        NavMeshAgent agent,
+        TowerManager towerManager,
+        Transform self,
+        int attackPower,
+        float attackRange,
+        float attackCooldown,
+        Transform baseTarget,
+        IAttackHandler attackHandler)
     {
         _agent = agent;
         _towerManager = towerManager;
@@ -32,71 +33,72 @@ public class AttackerBehavior : IEnemyBehavior
         _attackCooldown = attackCooldown;
         _baseTarget = baseTarget;
         _attackHandler = attackHandler;
-        _retargetRange = retargetRange;
     }
 
     public void Tick()
     {
         _attackTimer -= Time.deltaTime;
-        _retargetTimer -= Time.deltaTime;
 
-        // 🔁 Belirli aralıklarla daha yakın kule var mı diye kontrol et
-        if (_retargetTimer <= 0f)
+        // Hedef kule yoksa en yakını ara
+        if (_currentTargetTower == null || !_currentTargetTower.gameObject.activeSelf)
         {
-            Tower newTarget = FindClosestTower();
-            if (newTarget != null && newTarget != _currentTargetTower)
+            _currentTargetTower = FindClosestTower();
+
+            if (_currentTargetTower != null)
             {
-                _currentTargetTower = newTarget;
+                _currentTargetTower.RegisterAttacker(_self.GetComponent<EnemyNavAgent>());
                 _agent.SetDestination(_currentTargetTower.transform.position);
             }
-
-            _retargetTimer = _retargetCooldown;
-        }
-
-        if (_currentTargetTower == null)
-        {
-            _agent.SetDestination(_baseTarget.position);
-            return;
+            else
+            {
+                _agent.SetDestination(_baseTarget.position);
+                return;
+            }
         }
 
         float dist = Vector3.Distance(_self.position, _currentTargetTower.transform.position);
 
-        if (dist <= _attackRange)
-        {
-            _agent.ResetPath();
-
-            if (_attackTimer <= 0f)
-            {
-                _attackHandler?.DoAttack(_currentTargetTower);
-                _attackTimer = _attackCooldown;
-            }
-        }
-        else
+        if (dist > _attackRange)
         {
             _agent.SetDestination(_currentTargetTower.transform.position);
+            return;
+        }
+
+        // Saldırı zamanı
+        _agent.ResetPath();
+
+        if (_attackTimer <= 0f)
+        {
+            _attackHandler?.DoAttack(_currentTargetTower);
+            _attackTimer = _attackCooldown;
+        }
+
+        // Eğer kule yok edilirse hedefi bırak
+        if (_currentTargetTower == null || !_currentTargetTower.gameObject.activeSelf)
+        {
+            _currentTargetTower?.UnregisterAttacker(_self.GetComponent<EnemyNavAgent>());
+            _currentTargetTower = null;
         }
     }
 
     private Tower FindClosestTower()
     {
-        List<Tower> towers = _towerManager.GetAllTowers();
+        var towers = _towerManager.GetAllTowers();
         Tower closest = null;
-        float minDist = Mathf.Infinity;
+        float closestDist = Mathf.Infinity;
 
         foreach (var tower in towers)
         {
             if (tower == null) continue;
 
             float dist = Vector3.Distance(_self.position, tower.transform.position);
-
-            if (dist <= _retargetRange && dist < minDist)
+            if (dist < closestDist)
             {
-                minDist = dist;
                 closest = tower;
+                closestDist = dist;
             }
         }
 
         return closest;
     }
-
 }

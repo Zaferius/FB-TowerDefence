@@ -8,14 +8,15 @@ public class TowerPlacementManager : MonoBehaviour, ITowerPlacer
     [SerializeField] private TowerSelectionPanel selectionPanel;
 
     private GridSlot _currentSlot;
+    
     private bool _isPlacementMode;
 
     public bool IsPlacementMode => _isPlacementMode;
     
-    private IFactory<TowerData, Vector3, Tower> _towerFactory;
+    private IFactory<TowerData, Vector3, GridSlot, Tower> _towerFactory;
     
     [Inject]
-    public void Construct(IFactory<TowerData, Vector3, Tower> towerFactory)
+    public void Construct(IFactory<TowerData, Vector3, GridSlot, Tower> towerFactory)
     {
         _towerFactory = towerFactory;
     }
@@ -55,10 +56,10 @@ public class TowerPlacementManager : MonoBehaviour, ITowerPlacer
     {
         if (_currentSlot == null) return;
 
-        var position = _currentSlot.transform.position;
-        _towerFactory.Create(data, position);
+        var tower = _towerFactory.Create(data, _currentSlot.transform.position + new Vector3(0,1,0), _currentSlot);
+        _currentSlot.SetOccupied();
 
-        selectionPanel.Hide(0);
         _currentSlot = null;
+        selectionPanel.Hide(0);
     }
 }

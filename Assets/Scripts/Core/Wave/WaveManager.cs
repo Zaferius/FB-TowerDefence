@@ -11,10 +11,9 @@ public class WaveManager : MonoBehaviour
     
     public static event Action<int> OnWavesInitialized;
     public static event Action<int> OnWaveStarted;
-    public static event Action OnPlacementEnded;
     public static event Action OnPlacementStarted;
-    
     public static event Action OnGameWin;
+    public static  Action OnGameOver;
 
     [SerializeField] private List<WaveData> waves;
     [SerializeField] private List<Transform> spawnPoints;

@@ -42,16 +42,15 @@ public class AttackerBehavior : IEnemyBehavior
     {
         _attackTimer -= Time.deltaTime;
         _retargetTimer -= Time.deltaTime;
+
         
-        if (_currentTargetTower == null || !_currentTargetTower.gameObject.activeSelf)
+        if (_towerManager.GetAllTowers().Count == 0)
         {
-            SetNewTarget();
+            _agent.SetDestination(_baseTarget.position);
             return;
         }
-
-        var dist = Vector3.Distance(_self.position, _currentTargetTower.transform.position);
         
-        if (dist > _attackRange && _retargetTimer <= 0f)
+        if ((_currentTargetTower == null || !_currentTargetTower.gameObject.activeSelf) && _retargetTimer <= 0f)
         {
             SetNewTarget();
             _retargetTimer = _retargetCooldown;
@@ -63,6 +62,8 @@ public class AttackerBehavior : IEnemyBehavior
             return;
         }
         
+        float dist = Vector3.Distance(_self.position, _currentTargetTower.transform.position);
+
         if (dist > _attackRange)
         {
             _agent.SetDestination(_currentTargetTower.transform.position);
@@ -77,47 +78,30 @@ public class AttackerBehavior : IEnemyBehavior
             _attackTimer = _attackCooldown;
         }
     }
+
+
     
     private void SetNewTarget()
     {
-        if (_currentTargetTower != null)
-        {
-            _currentTargetTower.UnregisterAttacker(_self.GetComponent<EnemyNavAgent>());
-        }
-        
-        var newTarget = FindClosestTower();
-
-        if (newTarget != null)
-        {
-            _currentTargetTower = newTarget;
-            _currentTargetTower.RegisterAttacker(_self.GetComponent<EnemyNavAgent>());
-            _agent.SetDestination(_currentTargetTower.transform.position);
-        }
-        else
-        {
-            _currentTargetTower = null;
-            _agent.SetDestination(_baseTarget.position);
-        }
-    }
-
-    private Tower FindClosestTower()
-    {
         var towers = _towerManager.GetAllTowers();
-        Tower closest = null;
         float closestDist = Mathf.Infinity;
+        Tower closest = null;
 
         foreach (var tower in towers)
         {
-            if (tower == null) continue;
-
             float dist = Vector3.Distance(_self.position, tower.transform.position);
             if (dist < closestDist)
             {
-                closest = tower;
                 closestDist = dist;
+                closest = tower;
             }
         }
 
-        return closest;
+        if (closest != null)
+        {
+            _currentTargetTower = closest;
+            _currentTargetTower.RegisterAttacker(_self.GetComponent<EnemyNavAgent>());
+            _agent.SetDestination(_currentTargetTower.transform.position);
+        }
     }
 }

@@ -68,8 +68,14 @@ public class Tower : MonoBehaviour,IDamageable
 
     public void RegisterAttacker(EnemyNavAgent enemy)
     {
+        var dist = Vector3.Distance(transform.position, enemy.transform.position);
+    
+        if (dist > _towerData.range) return;
+
         if (!_attackers.Contains(enemy))
+        {
             _attackers.Add(enemy);
+        }
     }
 
     public void UnregisterAttacker(EnemyNavAgent enemy)

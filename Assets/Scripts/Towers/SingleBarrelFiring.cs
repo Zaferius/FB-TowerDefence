@@ -18,10 +18,18 @@ public class SingleBarrelFiring : MonoBehaviour, ITowerFiringStrategy
     
     public void Fire(EnemyNavAgent target)
     {
-        weaponHolder.transform.DOLookAt(target.transform.position, 0.2f).SetEase(Ease.OutBack).OnComplete(() =>
+        var lookPos = target.transform.position;
+        weaponHolder.transform.DOLookAt(lookPos, 0.2f).SetEase(Ease.OutBack).OnComplete(() =>
         {
+            if(target == null)return;
+            
             var projectile = Instantiate(_data.projectilePrefab, firePoint.position, Quaternion.identity).GetComponent<Projectile>();
-            projectile.SetTarget(target.transform,_data.attackPower);
+            
+            if (target != null)
+            {
+                projectile.SetTarget(target.transform,_data.attackPower);
+            }
+            
             Recoil();
             
             //Particle test >>

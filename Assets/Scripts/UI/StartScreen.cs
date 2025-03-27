@@ -11,7 +11,6 @@ public class StartScreen : MonoBehaviour
     [SerializeField] private GameObject touchToText;
     private WaveManager _waveManager;
     
-    public event Action OnStartGame;
 
     [Inject]
     public void Construct(WaveManager waveManager)

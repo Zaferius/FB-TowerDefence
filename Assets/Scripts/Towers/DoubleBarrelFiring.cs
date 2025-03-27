@@ -19,13 +19,19 @@ public class DoubleBarrelFiring : MonoBehaviour, ITowerFiringStrategy
 
     public void Fire(EnemyNavAgent target)
     {
-        weaponHolder.transform.DOLookAt(target.transform.position, 0.2f).SetEase(Ease.OutBack).OnComplete(() =>
+        var lookPos = target.transform.position;
+        weaponHolder.transform.DOLookAt(lookPos, 0.2f).SetEase(Ease.OutBack).OnComplete(() =>
         {
+            if(target == null)return;
             var currentIndex = _nextFirePointIndex % firePoints.Length;
 
             var firePoint = firePoints[currentIndex];
             var projectile = Instantiate(_data.projectilePrefab, firePoint.position, Quaternion.identity).GetComponent<Projectile>();
-            projectile.SetTarget(target.transform,_data.attackPower);
+
+            if (target != null)
+            {
+                projectile.SetTarget(target.transform,_data.attackPower);
+            }
 
             Recoil(currentIndex);
 
@@ -35,7 +41,6 @@ public class DoubleBarrelFiring : MonoBehaviour, ITowerFiringStrategy
             if (_data.attackEffectPrefab != null)
             {
                 var effect = Instantiate(_data.attackEffectPrefab, firePoint.position, firePoint.rotation);
-                Destroy(effect, 1.5f);
             }
 
         });
@@ -60,6 +65,6 @@ public class DoubleBarrelFiring : MonoBehaviour, ITowerFiringStrategy
             0.5f           
         ).SetEase(Ease.OutQuad).SetId(weaponBarrels[index]);
     }
-
+    
 
 }

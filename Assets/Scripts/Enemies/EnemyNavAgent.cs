@@ -19,7 +19,7 @@ public class EnemyNavAgent : MonoBehaviour, IDamageable
 
     [Inject] private TowerManager _towerManager;
     [Inject] private EnemyManager _enemyManager;
-
+    
     private Vector3 defScale;
 
     public void Setup(EnemyDefinition definition, Transform target)
@@ -94,14 +94,17 @@ public class EnemyNavAgent : MonoBehaviour, IDamageable
 
     private void OnDied()
     {
+        Helper.KillAllTweenReferencesIn(transform);
         Destroy(gameObject);
     }
 
     public void OnDamaged()
     {
-        transform.DOPunchScale(new Vector3(.1f, .1f, .1f), 0.1f).OnComplete(() =>
+        if(gameObject == null) return;
+        transform.DOPunchScale(new Vector3(.1f, .1f, .1f), 0.1f).SetLink(gameObject, LinkBehaviour.KillOnDestroy).OnComplete(() =>
         {
-            transform.DOScale(defScale, 0.15f);
+            transform.DOScale(defScale, 0.15f).SetLink(gameObject, LinkBehaviour.KillOnDestroy);
         });
     }
+    
 }

@@ -12,7 +12,8 @@ public class Tower : MonoBehaviour,IDamageable
     private TowerManager _towerManager;
     private GridSlot _ownerSlot;
     
-   
+    private Tween _damageTween;
+    
     [SerializeField] private Renderer[] renderersToColorize;
     [SerializeField] private List<EnemyNavAgent> _enemiesInRange = new();
     [SerializeField] private  List<EnemyNavAgent> _currentlyInRange = new();
@@ -183,7 +184,6 @@ public class Tower : MonoBehaviour,IDamageable
             }
         }*/
         
-        
         transform.DOPunchScale(new Vector3(.1f, .1f, .1f), 0.1f).OnComplete(() =>
         {
             transform.DOScale(Vector3.one, 0.15f);
@@ -194,6 +194,9 @@ public class Tower : MonoBehaviour,IDamageable
     {
         _ownerSlot?.ClearOccupied();
         _towerManager.UnregisterTower(this);
+        
+        Helper.KillAllTweenReferencesIn(transform);
         Destroy(gameObject);
     }
+    
 }

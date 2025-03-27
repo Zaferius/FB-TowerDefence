@@ -19242,6 +19242,7 @@ GameObject:
   - component: {fileID: 7563212257418155247}
   - component: {fileID: 4879905446018703157}
   - component: {fileID: 3470580448217300225}
+  - component: {fileID: 3936239835137368292}
   m_Layer: 0
   m_Name: Attack_Particle
   m_TagString: Untagged
@@ -24001,6 +24002,18 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &3936239835137368292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5620006819430003508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b283847910a9793499a8a37412eb13c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7716427041545246761
 GameObject:
   m_ObjectHideFlags: 0

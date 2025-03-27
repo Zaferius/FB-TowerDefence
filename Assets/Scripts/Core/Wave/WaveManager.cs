@@ -17,15 +17,14 @@ public class WaveManager : MonoBehaviour
 
     [SerializeField] private List<WaveData> waves;
     [SerializeField] private List<Transform> spawnPoints;
+    [SerializeField]  private List<EnemyNavAgent> _aliveEnemies;
     [SerializeField] private Transform baseTarget;
 
     [SerializeField] private float timeBetweenEnemySpawns = 0.3f;
     [SerializeField] private float placementDuration = 5f;
 
     private int _currentWaveIndex = 0;
-    [SerializeField]  private int _aliveEnemies;
     
-  
 
     [Inject] private IFactory<EnemyDefinition, Transform, Vector3, EnemyNavAgent> _enemyFactory;
     [Inject] private EnemyManager _enemyManager;
@@ -49,7 +48,7 @@ public class WaveManager : MonoBehaviour
             OnWaveStarted?.Invoke(_currentWaveIndex + 1);
             yield return StartCoroutine(SpawnWave(waves[_currentWaveIndex]));
             
-            yield return new WaitUntil(() => _aliveEnemies <= 0);
+            yield return new WaitUntil(() => _aliveEnemies.Count <= 0);
 
             _currentWaveIndex++;
         }
@@ -60,17 +59,15 @@ public class WaveManager : MonoBehaviour
 
     private IEnumerator SpawnWave(WaveData wave)
     {
-        _aliveEnemies = 0;
-        _aliveEnemies = wave.TotalEnemyCount;
-
         foreach (var entry in wave.entries)
         {
             for (int i = 0; i < entry.count; i++)
             {
                 Vector3 spawnPos = GetRandomSpawnPoint();
-                var enemy = _enemyFactory.Create(entry.enemyDefinition, baseTarget, spawnPos + new Vector3(Random.Range(-2f,2f), 0 , Random.Range(-2f, 2f)));
-                
-                enemy.Health.OnDeath += () => _aliveEnemies--;
+                var enemy = _enemyFactory.Create(entry.enemyDefinition, baseTarget, spawnPos);
+
+                _aliveEnemies.Add(enemy);
+                enemy.Health.OnDeath += () => _aliveEnemies.Remove(enemy);
                 
                 yield return new WaitForSeconds(timeBetweenEnemySpawns);
             }
@@ -85,7 +82,7 @@ public class WaveManager : MonoBehaviour
             return Vector3.zero;
         }
 
-        var index = UnityEngine.Random.Range(0, spawnPoints.Count);
+        var index = Random.Range(0, spawnPoints.Count);
         return spawnPoints[index].position;
     }
 }

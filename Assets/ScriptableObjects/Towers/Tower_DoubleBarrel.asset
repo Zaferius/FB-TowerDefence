@@ -16,7 +16,7 @@ MonoBehaviour:
   health: 35
   range: 6
   attackTimer: 0.3
-  attackPower: 5
+  attackPower: 4
   attackEffectPrefab: {fileID: 5620006819430003508, guid: 23c94999b1fd9404092b0cbc54238e43,
     type: 3}
   towerColor: {r: 0.24056602, g: 0.49835542, b: 1, a: 1}

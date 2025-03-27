@@ -9,9 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f3b2dfd3b488aa4090bd88388836c76, type: 3}
-  m_Name: Wave1
+  m_Script: {fileID: 11500000, guid: ec969fb112203e4488f2b197ef3f3bd4, type: 3}
+  m_Name: EnemyTypeConfig_Runner
   m_EditorClassIdentifier: 
-  entries:
-  - enemyDefinition: {fileID: 11400000, guid: f0e4398d79067144090055934ce43e34, type: 2}
-    count: 2
+  type: 0
+  health: 125
+  speed: 1.5
+  attackPower: 0
+  attackCooldown: 0
+  attackRange: 0
+  prefab: {fileID: 7411337395877470646, guid: e7ba901bcecbad1458382753fa9f6b98, type: 3}

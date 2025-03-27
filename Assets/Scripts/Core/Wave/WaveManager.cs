@@ -36,6 +36,7 @@ public class WaveManager : MonoBehaviour
         
         OnWavesInitialized?.Invoke(waves.Count);
         StartCoroutine(RunWaves());
+        StartCoroutine(CleanMissingEnemies());
     }
 
     private IEnumerator RunWaves()
@@ -67,7 +68,7 @@ public class WaveManager : MonoBehaviour
                 var enemy = _enemyFactory.Create(entry.enemyDefinition, baseTarget, spawnPos);
 
                 _aliveEnemies.Add(enemy);
-                enemy.Health.OnDeath += () => _aliveEnemies.Remove(enemy);
+                enemy.Health.OnDeath += () => HandleEnemyDeath(enemy);
                 
                 yield return new WaitForSeconds(timeBetweenEnemySpawns);
             }
@@ -84,5 +85,23 @@ public class WaveManager : MonoBehaviour
 
         var index = Random.Range(0, spawnPoints.Count);
         return spawnPoints[index].position;
+    }
+    
+    private void HandleEnemyDeath(EnemyNavAgent enemy)
+    {
+        if (_aliveEnemies.Contains(enemy))
+        {
+            _aliveEnemies.Remove(enemy);
+        }
+    }
+    
+    private IEnumerator CleanMissingEnemies()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(2f); // Aralığı istediğin gibi belirleyebilirsin
+
+            _aliveEnemies.RemoveAll(e => e == null);
+        }
     }
 }

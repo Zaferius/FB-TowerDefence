@@ -56,13 +56,7 @@ public class AttackerBehavior : IEnemyBehavior
             _retargetTimer = _retargetCooldown;
         }
         
-        if (_currentTargetTower == null)
-        {
-            _agent.SetDestination(_baseTarget.position);
-            return;
-        }
-        
-        float dist = Vector3.Distance(_self.position, _currentTargetTower.transform.position);
+        var dist = Vector3.Distance(_self.position, _currentTargetTower.transform.position);
 
         if (dist > _attackRange)
         {

@@ -117,7 +117,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1.038, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.25, y: 1.25, z: 1.25}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3437140375603849583}
@@ -245,8 +245,6 @@ MonoBehaviour:
   weaponHolder: {fileID: 3437140375603849583}
   weaponBarrel: {fileID: 1725985797669082562}
   firePoint: {fileID: 2792554366883980796}
-  projectilePrefab: {fileID: 3797043475157624576, guid: 29e46d0cddb41cd4da05d37e0f632107,
-    type: 3}
   _closestEnemy: {fileID: 0}
 --- !u!114 &2098720084630824855
 MonoBehaviour:

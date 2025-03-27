@@ -192,7 +192,7 @@ public class Tower : MonoBehaviour,IDamageable
         
         transform.DOPunchScale(new Vector3(.1f, .1f, .1f), 0.1f).OnComplete(() =>
         {
-            transform.DOScale(Vector3.one, 0.15f);
+            transform.DOScale(new Vector3(1.25f,1.25f,1.25f), 0.15f);
         });
     }
     

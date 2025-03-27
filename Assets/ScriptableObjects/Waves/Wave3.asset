@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entries:
   - enemyDefinition: {fileID: 11400000, guid: f0e4398d79067144090055934ce43e34, type: 2}
-    count: 2
+    count: 5

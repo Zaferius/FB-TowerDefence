@@ -15,8 +15,7 @@ MonoBehaviour:
   type: 1
   health: 100
   speed: 1
-  attackPower: 9
+  attackPower: 7
   attackCooldown: 0.5
   attackRange: 2
-  targetSearchRadius: 5
   prefab: {fileID: 7411337395877470646, guid: d0e2c501de4d2184fb91ca6466ddfe04, type: 3}

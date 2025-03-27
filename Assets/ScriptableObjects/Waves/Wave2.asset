@@ -16,4 +16,4 @@ MonoBehaviour:
   - enemyDefinition: {fileID: 11400000, guid: f0e4398d79067144090055934ce43e34, type: 2}
     count: 1
   - enemyDefinition: {fileID: 11400000, guid: 0f4214266de7a7247b216a91f621c208, type: 2}
-    count: 2
+    count: 4

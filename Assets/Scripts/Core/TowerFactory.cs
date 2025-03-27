@@ -23,7 +23,7 @@ public class TowerFactory : IFactory<TowerData, Vector3,GridSlot, Tower>
         tower.Initialize(data, strategy, _towerManager, slot);
 
         tower.transform
-            .DOScale(Vector3.one, 0.2f)
+            .DOScale(new Vector3(1.25f,1.25f,1.25f), 0.2f)
             .From(Vector3.zero)
             .SetEase(Ease.OutBack);
 

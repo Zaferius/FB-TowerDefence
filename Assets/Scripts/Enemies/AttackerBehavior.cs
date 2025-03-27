@@ -43,27 +43,34 @@ public class AttackerBehavior : IEnemyBehavior
         _attackTimer -= Time.deltaTime;
         _retargetTimer -= Time.deltaTime;
 
-        
-        if (_towerManager.GetAllTowers().Count == 0)
+        var allTowers = _towerManager.GetAllTowers();
+        if (allTowers.Count == 0)
         {
             _agent.SetDestination(_baseTarget.position);
             return;
         }
-        
-        if ((_currentTargetTower == null || !_currentTargetTower.gameObject.activeSelf) && _retargetTimer <= 0f)
+
+        // Belirli aralıklarla en yakın kuleyi kontrol et
+        if (_retargetTimer <= 0f)
         {
             SetNewTarget();
             _retargetTimer = _retargetCooldown;
         }
-        
-        var dist = Vector3.Distance(_self.position, _currentTargetTower.transform.position);
+
+        if (_currentTargetTower == null || !_currentTargetTower.gameObject.activeSelf)
+        {
+            _agent.SetDestination(_baseTarget.position);
+            return;
+        }
+
+        float dist = Vector3.Distance(_self.position, _currentTargetTower.transform.position);
 
         if (dist > _attackRange)
         {
             _agent.SetDestination(_currentTargetTower.transform.position);
             return;
         }
-        
+
         _agent.ResetPath();
 
         if (_attackTimer <= 0f)
@@ -72,6 +79,7 @@ public class AttackerBehavior : IEnemyBehavior
             _attackTimer = _attackCooldown;
         }
     }
+
 
 
     
@@ -83,19 +91,23 @@ public class AttackerBehavior : IEnemyBehavior
 
         foreach (var tower in towers)
         {
+            if (tower == null) continue;
+
             float dist = Vector3.Distance(_self.position, tower.transform.position);
             if (dist < closestDist)
             {
-                closestDist = dist;
                 closest = tower;
+                closestDist = dist;
             }
         }
 
-        if (closest != null)
+        if (closest != null && closest != _currentTargetTower)
         {
+            _currentTargetTower?.UnregisterAttacker(_self.GetComponent<EnemyNavAgent>());
             _currentTargetTower = closest;
             _currentTargetTower.RegisterAttacker(_self.GetComponent<EnemyNavAgent>());
             _agent.SetDestination(_currentTargetTower.transform.position);
         }
     }
+
 }

@@ -79,7 +79,6 @@ public class WaveManager : MonoBehaviour
     {
         if (spawnPoints == null || spawnPoints.Count == 0)
         {
-            Debug.LogWarning("No spawn points assigned to WaveManager.");
             return Vector3.zero;
         }
 

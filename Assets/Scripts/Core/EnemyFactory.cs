@@ -12,7 +12,7 @@ public class EnemyFactory : IFactory<EnemyDefinition, Transform, Vector3, EnemyN
 
     public EnemyNavAgent Create(EnemyDefinition definition, Transform target, Vector3 spawnPosition)
     {
-        GameObject obj = _container.InstantiatePrefab(definition.prefab, spawnPosition, Quaternion.identity, null);
+        var obj = _container.InstantiatePrefab(definition.prefab, spawnPosition, Quaternion.identity, null);
         var enemy = obj.GetComponent<EnemyNavAgent>();
         enemy.Setup(definition, target);
         return enemy;

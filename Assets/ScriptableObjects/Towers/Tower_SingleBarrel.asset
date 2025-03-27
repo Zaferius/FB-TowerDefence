@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   health: 50
-  range: 4
+  range: 7
   attackTimer: 0.65
   attackPower: 8
   attackEffectPrefab: {fileID: 5620006819430003508, guid: 23c94999b1fd9404092b0cbc54238e43,

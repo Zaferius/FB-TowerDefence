@@ -30,7 +30,7 @@ public class WaveUIController : MonoBehaviour
     private void SetTotalWaves(int total)
     {
         totalWaves = total;
-        currentWave = 0; // oyun başı
+        currentWave = 0;
         UpdateWaveText();
     }
 

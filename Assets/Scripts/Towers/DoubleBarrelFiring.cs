@@ -16,7 +16,6 @@ public class DoubleBarrelFiring : MonoBehaviour, ITowerFiringStrategy
         _data = data;
     }
     
-
     public void Fire(EnemyNavAgent target)
     {
         var lookPos = target.transform.position;

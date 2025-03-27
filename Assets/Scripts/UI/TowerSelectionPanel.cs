@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class TowerSelectionPanel : MonoBehaviour
 {
-    [SerializeField] private GameObject panelRoot; // panelin aktif/deaktif edileceği root
+    [SerializeField] private GameObject panelRoot;
 
     private bool _isOpen;
 

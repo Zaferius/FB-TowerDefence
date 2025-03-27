@@ -13,17 +13,4 @@ public class WaveEntry
 public class WaveData : ScriptableObject
 {
     public List<WaveEntry> entries;
-    
-    public int TotalEnemyCount
-    {
-        get
-        {
-            var total = 0;
-            foreach (var entry in entries)
-            {
-                total += entry.count;
-            }
-            return total;
-        }
-    }
 }

@@ -14,6 +14,9 @@ public class AttackerBehavior : IEnemyBehavior
 
     private Tower _currentTargetTower;
     private float _attackTimer;
+    
+    private float _retargetCooldown = 1f;
+    private float _retargetTimer = 0f;
 
     public AttackerBehavior(
         NavMeshAgent agent,
@@ -38,33 +41,34 @@ public class AttackerBehavior : IEnemyBehavior
     public void Tick()
     {
         _attackTimer -= Time.deltaTime;
-
-        // Hedef kule yoksa en yakını ara
+        _retargetTimer -= Time.deltaTime;
+        
         if (_currentTargetTower == null || !_currentTargetTower.gameObject.activeSelf)
         {
-            _currentTargetTower = FindClosestTower();
-
-            if (_currentTargetTower != null)
-            {
-                _currentTargetTower.RegisterAttacker(_self.GetComponent<EnemyNavAgent>());
-                _agent.SetDestination(_currentTargetTower.transform.position);
-            }
-            else
-            {
-                _agent.SetDestination(_baseTarget.position);
-                return;
-            }
+            SetNewTarget();
+            return;
         }
 
-        float dist = Vector3.Distance(_self.position, _currentTargetTower.transform.position);
-
+        var dist = Vector3.Distance(_self.position, _currentTargetTower.transform.position);
+        
+        if (dist > _attackRange && _retargetTimer <= 0f)
+        {
+            SetNewTarget();
+            _retargetTimer = _retargetCooldown;
+        }
+        
+        if (_currentTargetTower == null)
+        {
+            _agent.SetDestination(_baseTarget.position);
+            return;
+        }
+        
         if (dist > _attackRange)
         {
             _agent.SetDestination(_currentTargetTower.transform.position);
             return;
         }
-
-        // Saldırı zamanı
+        
         _agent.ResetPath();
 
         if (_attackTimer <= 0f)
@@ -72,12 +76,27 @@ public class AttackerBehavior : IEnemyBehavior
             _attackHandler?.DoAttack(_currentTargetTower);
             _attackTimer = _attackCooldown;
         }
-
-        // Eğer kule yok edilirse hedefi bırak
-        if (_currentTargetTower == null || !_currentTargetTower.gameObject.activeSelf)
+    }
+    
+    private void SetNewTarget()
+    {
+        if (_currentTargetTower != null)
         {
-            _currentTargetTower?.UnregisterAttacker(_self.GetComponent<EnemyNavAgent>());
+            _currentTargetTower.UnregisterAttacker(_self.GetComponent<EnemyNavAgent>());
+        }
+        
+        var newTarget = FindClosestTower();
+
+        if (newTarget != null)
+        {
+            _currentTargetTower = newTarget;
+            _currentTargetTower.RegisterAttacker(_self.GetComponent<EnemyNavAgent>());
+            _agent.SetDestination(_currentTargetTower.transform.position);
+        }
+        else
+        {
             _currentTargetTower = null;
+            _agent.SetDestination(_baseTarget.position);
         }
     }
 

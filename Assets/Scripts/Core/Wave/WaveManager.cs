@@ -99,7 +99,7 @@ public class WaveManager : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(2f); // Aralığı istediğin gibi belirleyebilirsin
+            yield return new WaitForSeconds(2f);
 
             _aliveEnemies.RemoveAll(e => e == null);
         }

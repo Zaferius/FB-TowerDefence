@@ -14,27 +14,27 @@ public class SceneInstaller : MonoInstaller
 
     public override void InstallBindings()
     {
-        // Tower Placement Manager (UI ve Grid ile kule yerleştirme)
+        // TowerPlacementManager
         Container.Bind<ITowerPlacer>()
             .FromInstance(towerPlacementManager)
-            .AsSingle(); // veya .IfNotBound(); güvenlik için
+            .AsSingle();
 
-        // Tower Factory
+        // TowerFactory
         Container.Bind<IFactory<TowerData, Vector3,GridSlot, Tower>>()
             .To<TowerFactory>()
             .AsSingle();
 
-        // Enemy Factory
+        // EnemyFactory
         Container.Bind<IFactory<EnemyDefinition, Transform, Vector3, EnemyNavAgent>>()
             .To<EnemyFactory>()
             .AsSingle();
 
-        // Enemy Definitions listesi
+        // EnemyDefinitions
         Container.Bind<EnemyDefinition[]>()
             .FromInstance(enemyDefinitions)
             .AsSingle();
 
-        // Tower Manager
+        // TowerManager
         Container.Bind<TowerManager>()
             .FromInstance(towerManager)
             .AsSingle();

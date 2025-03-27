@@ -19,7 +19,7 @@ public static class Helper
         {
             foreach (var mat in rend.materials)
             {
-                DOTween.Kill(mat); // Color / Fade için
+                DOTween.Kill(mat);
             }
         }
         
